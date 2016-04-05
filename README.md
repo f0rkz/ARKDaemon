@@ -13,6 +13,7 @@ In order to run this script the following needs to be installed:
 ###Windows
  - python2.7 or higher: https://www.python.org/downloads/
  - pip (should be included in the python installer)
+ - Some sort of git integrated with cmd. [I use the program here](https://git-scm.com/download/win).
 
 * Make sure python is configured in Windows PATH Environment
 
