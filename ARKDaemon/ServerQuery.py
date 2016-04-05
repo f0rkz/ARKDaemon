@@ -9,5 +9,4 @@ class ServerQuery(object):
 
     def GetStatus(self):
         request = requests.get('{api}{ip}/{port}'.format(api=self.api, ip=self.ip, port=self.port))
-        data = json.loads(request.text)
-        return data
+        return request.json()
