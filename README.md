@@ -1,5 +1,5 @@
 # ARKDaemon: A Python Tool for ARK Dedicated Servers
----
+
 This tool provides a suite of management tools for your Windows or Linux ARK: Survival Evolved Dedicated Server.
 
 Please read over the README.md file thoroughly as important information is included here.
@@ -7,7 +7,7 @@ Please read over the README.md file thoroughly as important information is inclu
 This tool is currently in development. Please submit issues if any come up!
 
 # Installation
----
+
 ##Prerequisites
 In order to run this script the following needs to be installed:
 ###Windows
@@ -46,7 +46,7 @@ You may need to reboot to make sure all of these settings took hold.
 For more information, [check this link](http://ark.gamepedia.com/Dedicated_Server_Setup).
 
 # Program Structure
----
+
 ```
 ARKDaemon
 | ARKDaemon.py: The main script
