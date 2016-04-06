@@ -97,11 +97,11 @@ if args.status:
     result = this.status()
     if result['status'] == True:
         print "Status: Online"
-        print "Server Name: {}".format(result['server']['name'])
-        print "Server Version: {}".format(result['server']['version'])
-        print "Server Map: {}".format(result['server']['map'])
-        print "Server Environment: {}".format(result['server']['environment'])
-        print "Players: {} / {}".format(result['server']['playerCount'], result['server']['playerMax'])
+        print "Server Name: {}".format(result['hostname'])
+        print "Server Version: {}".format(result['version'])
+        print "Server Map: {}".format(result['map'])
+        print "Server Environment: {}".format(result['os'])
+        print "Players: {} / {}".format(result['players_cur'], result['players_max'])
     else:
         print "Status: Offline"
         print "Possible issue with returned data, the server does not exist, or the server is offline."
