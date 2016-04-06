@@ -9,6 +9,7 @@ import subprocess
 # Classes from project
 from ARKDaemon.SteamCmd import SteamCmd
 from ARKDaemon.ConfigureArk import ConfigureArk
+from ARKDaemon.ServerQuery import ServerQuery
 
 # 376030 ark dedi server
 # 445400 ark survival of the fittest dedi server
@@ -19,6 +20,7 @@ argparser.add_argument("-s", "--install_steamcmd", help="Install Steamcmd. (Requ
 argparser.add_argument("-i", "--install_ark", help="Install the gameserver files.", action="store_true")
 argparser.add_argument("-c", "--configure", help="Run the configuration tool.", action="store_true")
 argparser.add_argument("-u", "--update", help="Update the gameserver files.", action="store_true")
+argparser.add_argument("--status", nargs = '*', help="Run a status on gameserver. Accepts two values: --status server port")
 argparser.add_argument("--start", help="Start the server", action="store_true")
 argparser.add_argument("--stop", help="Stop the server", action="store_true")
 argparser.add_argument("--safe", help="Save the server world before doing update/stop/etc. actions", action="store_true")
@@ -71,6 +73,24 @@ if args.install_mod:
 
 if args.backup:
     print "Backup!"
+
+if args.status:
+    if len(args.status) > 2 or len(args.status) < 2:
+        sys.exit("Improper values given. Please supply: [ip] [port]")
+    elif len(args.status) == 2:
+        this = ServerQuery(ip=args.status[0], port=args.status[1])
+        result = this.getstatus()
+        if result['status'] == True:
+            print "Status: Online"
+            print "Server Name: {}".format(result['server']['name'])
+            print "Server Version: {}".format(result['server']['version'])
+            print "Server Map: {}".format(result['server']['map'])
+            print "Server Environment: {}".format(result['server']['environment'])
+            print "Players: {} / {}".format(result['server']['playerCount'], result['server']['playerMax'])
+        else:
+            print "Status: Offline"
+            print "Possible issue with returned data, the server does not exist, or the server is offline."
+
 
 # Test steamcmd install
 #install = SteamCmd('376030')
