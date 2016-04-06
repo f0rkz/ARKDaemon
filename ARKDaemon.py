@@ -20,7 +20,7 @@ argparser.add_argument("-s", "--install_steamcmd", help="Install Steamcmd. (Requ
 argparser.add_argument("-i", "--install_ark", help="Install the gameserver files.", action="store_true")
 argparser.add_argument("-c", "--configure", help="Run the configuration tool.", action="store_true")
 argparser.add_argument("-u", "--update", help="Update the gameserver files.", action="store_true")
-argparser.add_argument("--status", nargs = '?', const=('127.0.0.1', 27015), help="Get the local server's status")
+argparser.add_argument("--status", help="Get the local server's status", action="store_true")
 argparser.add_argument("--remote_status", nargs = '*', help="Run a status on gameserver. Accepts two values: --remote_status server port")
 argparser.add_argument("--start", help="Start the server", action="store_true")
 argparser.add_argument("--stop", help="Stop the server", action="store_true")
@@ -93,7 +93,7 @@ if args.remote_status:
             print "Possible issue with returned data, the server does not exist, or the server is offline."
 
 if args.status:
-    this = ServerQuery()
+    this = ServerQuery(ip='127.0.0.1', port=27015)
     result = this.status()
     if result['status'] == True:
         print "Status: Online"
