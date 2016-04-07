@@ -1,14 +1,11 @@
 import sys
-import os.path
 
-#import ConfigParser
-#import sqlite3
+# import ConfigParser
+# import sqlite3
 import argparse
-import subprocess
 
 # Classes from project
 from ARKDaemon.SteamCmd import SteamCmd
-from ARKDaemon.ConfigureArk import ConfigureArk
 from ARKDaemon.ServerQuery import ServerQuery
 
 # 376030 ark dedi server
@@ -21,10 +18,12 @@ argparser.add_argument("-i", "--install_ark", help="Install the gameserver files
 argparser.add_argument("-c", "--configure", help="Run the configuration tool.", action="store_true")
 argparser.add_argument("-u", "--update", help="Update the gameserver files.", action="store_true")
 argparser.add_argument("--status", help="Get the local server's status", action="store_true")
-argparser.add_argument("--remote_status", nargs = '*', help="Run a status on gameserver. Accepts two values: --remote_status server port")
+argparser.add_argument("--remote_status", nargs='*',
+                       help="Run a status on gameserver. Accepts two values: --remote_status server port")
 argparser.add_argument("--start", help="Start the server", action="store_true")
 argparser.add_argument("--stop", help="Stop the server", action="store_true")
-argparser.add_argument("--safe", help="Save the server world before doing update/stop/etc. actions", action="store_true")
+argparser.add_argument("--safe", help="Save the server world before doing update/stop/etc. actions",
+                       action="store_true")
 argparser.add_argument("-f", "--force", help="Force the operation without abandon.", action="store_true")
 argparser.add_argument("--install_mod", help="Installs a mod. Example: ARKDaemon.py install_mod 655581765")
 argparser.add_argument("-b", "--backup", help="Backs up ARK world data.")
@@ -53,7 +52,6 @@ if args.install_ark and not args.start and not args.stop and not args.update:
             print "Invalid option: {}. Expecting C/c or S/s.".format(user_input)
 
     print "Installing ARK files. This will take a while. I suggest making some tea."
-    sleep(1)
     this = SteamCmd(appid=appid)
     this.install_ark()
 
@@ -81,7 +79,7 @@ if args.remote_status:
     elif len(args.remote_status) == 2:
         this = ServerQuery(ip=args.remote_status[0], port=args.remote_status[1])
         result = this.remotestatus()
-        if result['status'] == True:
+        if result['status']:
             print "Status: Online"
             print "Server Name: {}".format(result['server']['name'])
             print "Server Version: {}".format(result['server']['version'])
@@ -95,7 +93,7 @@ if args.remote_status:
 if args.status:
     this = ServerQuery(ip='127.0.0.1', port=27015)
     result = this.status()
-    if result['status'] == True:
+    if result['status']:
         print "Status: Online"
         print "Server Name: {}".format(result['hostname'])
         print "Server Version: {}".format(result['version'])
@@ -107,6 +105,6 @@ if args.status:
         print "Possible issue with returned data, the server does not exist, or the server is offline."
 
 # Test steamcmd install
-#install = SteamCmd('376030')
-#install.install_steamcmd()
-#install.install_gamefiles('376030')
+# install = SteamCmd('376030')
+# install.install_steamcmd()
+# install.install_gamefiles('376030')

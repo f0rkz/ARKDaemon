@@ -1,9 +1,10 @@
-import requests
 import re
-from socket import gethostbyname, gaierror, error
+from socket import gaierror, error
 
+import requests
 # External Modules to load
 from ARKDaemon.SourceQuery import SourceQuery
+
 
 class ServerQuery(object):
     def __init__(self, ip='127.0.0.1', port=27105):

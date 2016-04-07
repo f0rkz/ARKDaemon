@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # SourceQuery - Python class for querying info from Source Dedicated Servers
 # Copyright (c) 2010 Andreas Klauer <Andreas.Klauer@metamorpher.de>
 #
@@ -22,7 +22,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 """http://developer.valvesoftware.com/wiki/Server_Queries"""
 
@@ -31,13 +31,15 @@
 # TODO:  according to spec, packets may be bzip2 compressed.
 # TODO:: not implemented yet because I couldn't find a server that does this.
 
-import socket, struct, sys, time
 import StringIO
+import socket
+import struct
+import time
 
-PACKETSIZE=1400
+PACKETSIZE = 1400
 
-WHOLE=-1
-SPLIT=-2
+WHOLE = -1
+SPLIT = -2
 
 # REMOVED.  DEPRECATED QUERY!
 
@@ -62,6 +64,7 @@ A2S_RULES_REPLY = ord('E')
 # S2C_CHALLENGE
 CHALLENGE = -1
 S2C_CHALLENGE = ord('A')
+
 
 class SourceQueryPacket(StringIO.StringIO):
     # putting and getting values
@@ -100,11 +103,13 @@ class SourceQueryPacket(StringIO.StringIO):
         start = self.tell()
         end = val.index('\0', start)
         val = val[start:end]
-        self.seek(end+1)
+        self.seek(end + 1)
         return val
+
 
 class SourceQueryError(Exception):
     pass
+
 
 class SourceQuery(object):
     """Example usage:
@@ -214,24 +219,11 @@ class SourceQuery(object):
         after = time.time()
 
         if packet.getByte() == A2S_INFO_REPLY:
-            result = {}
-
-            result['ping'] = after - before
-
-            result['network_version'] = packet.getByte()
-            result['hostname'] = packet.getString()
-            result['map'] = packet.getString()
-            result['gamedir'] = packet.getString()
-            result['gamedesc'] = packet.getString()
-            result['appid'] = packet.getShort()
-            result['numplayers'] = packet.getByte()
-            result['maxplayers'] = packet.getByte()
-            result['numbots'] = packet.getByte()
-            result['dedicated'] = chr(packet.getByte())
-            result['os'] = chr(packet.getByte())
-            result['passworded'] = packet.getByte()
-            result['secure'] = packet.getByte()
-            result['version'] = packet.getString()
+            result = {'ping': after - before, 'network_version': packet.getByte(), 'hostname': packet.getString(),
+                      'map': packet.getString(), 'gamedir': packet.getString(), 'gamedesc': packet.getString(),
+                      'appid': packet.getShort(), 'numplayers': packet.getByte(), 'maxplayers': packet.getByte(),
+                      'numbots': packet.getByte(), 'dedicated': chr(packet.getByte()), 'os': chr(packet.getByte()),
+                      'passworded': packet.getByte(), 'secure': packet.getByte(), 'version': packet.getString()}
 
             # edf may or may not be present
             # contents undefined (see wiki page)
@@ -276,11 +268,8 @@ class SourceQuery(object):
             # TF2 32player servers may send an incomplete reply
             try:
                 for x in xrange(numplayers):
-                    player = {}
-                    player['index'] = packet.getByte()
-                    player['name'] = packet.getString()
-                    player['kills'] = packet.getLong()
-                    player['time'] = packet.getFloat()
+                    player = {'index': packet.getByte(), 'name': packet.getString(), 'kills': packet.getLong(),
+                              'time': packet.getFloat()}
                     result.append(player)
 
             except:
