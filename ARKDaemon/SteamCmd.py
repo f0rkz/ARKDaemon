@@ -1,4 +1,5 @@
 import os
+import sys
 import os.path
 import platform
 import subprocess
@@ -39,8 +40,9 @@ class SteamCmd(object):
                 with tarfile.open(os.path.join(self.steamcmd_path, 'steamcmd_linux.tar.gz'), 'r:gz') as z:
                     z.extractall(self.steamcmd_path)
         else:
-            sys_exit("Unsupported system. I detected {}.".format(self.platform))
+            sys.exit("Unsupported system. I detected {}.".format(self.platform))
 
+    # Command will update/install gamefiles.
     def install_gamefiles(self):
         if self.platform == "Windows":
             steamcmd_run = '{steamcmd_path}\steamcmd.exe ' \
@@ -70,7 +72,7 @@ class SteamCmd(object):
             subprocess.call(steamcmd_run, shell=True)
 
         else:
-            sys_exit("Unsupported system. I detected {}.".format(self.platform))
+            sys.exit("Unsupported system. I detected {}.".format(self.platform))
 
     def install_mod(self):
         if self.platform == "Windows":

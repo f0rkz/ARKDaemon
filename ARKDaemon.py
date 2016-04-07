@@ -101,6 +101,7 @@ elif args.update:
     if result['status']:
         sys.exit("Server is currently online! Stop the server first.")
     else:
+        print "Running update for ARK! Appid: {}".format(server_config['ARK']['appid'])
         update = SteamCmd(appid=server_config['ARK']['appid'])
         update.install_gamefiles()
 

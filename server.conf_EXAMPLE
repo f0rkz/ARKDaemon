@@ -1,10 +1,18 @@
-# Example configuration
-# Modify these values below.
-
 [ARK]
-appid = 376030              # Use 'appid = 376030' for ARK Classic, 'appid = 445400' for survival of the fittest
+# Use 'appid = 376030' for ARK Classic, 'appid = 445400' for survival of the fittest
+appid = 376030
+
+# This is the hostname or server name of your server.
 SessionName = ARKDaemon Server
+
+# If you want a private server, put your password here!
 ServerPassword =
+
+# The rcon/server admin password. Change it. Seriously, change it.
 ServerAdminPassword = changeMe
+
+# The map to start the server with. If you want a custom map, enter the name here.
 Map = TheIsland
-#Mods = 1234,5678,9101112   # Uncomment this and add your mods list separated by commas
+
+# Uncomment this and add your mods list separated by commas
+#Mods = 1234,5678,9101112
