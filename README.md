@@ -34,8 +34,8 @@ Then run:
 
 Add the following to `/etc/security/limits.conf`
 
-  *               soft    nofile          1000000
-  *               hard    nofile          1000000
+      *               soft    nofile          1000000
+      *               hard    nofile          1000000
 
 Add the following to `/etc/pam.d/common-session`
 
