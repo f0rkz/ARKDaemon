@@ -3,6 +3,8 @@ import os
 
 import ConfigParser
 import argparse
+from colorama import init, Fore, Style
+init()
 
 # Classes from project
 from ARKDaemon.SteamCmd import SteamCmd
@@ -11,7 +13,6 @@ from ARKDaemon.ServerRcon import ServerRcon
 
 # from ARKDaemon.ArkBackup import ArkBackup
 # from ARKDaemon.ConfigureArk import ConfigureArk
-# from ARKDaemon.ServerRcon import ServerRcon
 
 # List of Appids capable in this tool:
 # 376030 ark dedi server
@@ -122,28 +123,28 @@ elif args.remote_status:
         this = ServerQuery(ip=args.remote_status[0], port=args.remote_status[1])
         result = this.remotestatus()
         if result['status']:
-            print "Status: Online"
+            print("Status: " + Fore.GREEN + "Online" + Style.RESET_ALL)
             print "Server Name: {}".format(result['server']['name'])
             print "Server Version: {}".format(result['server']['version'])
             print "Server Map: {}".format(result['server']['map'])
             print "Server Environment: {}".format(result['server']['environment'])
             print "Players: {} / {}".format(result['server']['playerCount'], result['server']['playerMax'])
         else:
-            print "Status: Offline"
+            print("Status: " + Fore.RED + "Offline" + Style.RESET_ALL)
             print "Possible issue with returned data, the server does not exist, or the server is offline."
 
 elif args.status:
     this = ServerQuery(ip='127.0.0.1', port=27015)
     result = this.status()
     if result['status']:
-        print "Status: Online"
+        print("Status: " + Fore.GREEN + "Online" + Style.RESET_ALL)
         print "Server Name: {}".format(result['hostname'])
         print "Server Version: {}".format(result['version'])
         print "Server Map: {}".format(result['map'])
         print "Server Environment: {}".format(result['os'])
         print "Players: {} / {}".format(result['players_cur'], result['players_max'])
     else:
-        print "Status: Offline"
+        print("Status: " + Fore.RED + "Offline" + Style.RESET_ALL)
         print "Possible issue with returned data, the server does not exist, or the server is offline."
 
 else:
