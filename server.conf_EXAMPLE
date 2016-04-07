@@ -1,4 +1,8 @@
+# Example configuration
+# Modify these values below.
+
 [ARK]
+appid = 376030              # Use 'appid = 376030' for ARK Classic, 'appid = 445400' for survival of the fittest
 SessionName = ARKDaemon Server
 ServerPassword =
 ServerAdminPassword = changeMe

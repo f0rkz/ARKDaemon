@@ -1,5 +1,6 @@
 import sys
 import os
+import time
 
 import ConfigParser
 import argparse
@@ -55,6 +56,7 @@ else:
 # Spit out the configuration dictionary
 if DEBUG and server_config:
     print 'I am loading the following configuration:'
+    print 'APPID: {}'.format(server_config['ARK']['appid'])
     print 'Session Name: {}'.format(server_config['ARK']['sessionname'])
     if server_config['ARK']['serverpassword'] == '':
         print 'No join password.'
@@ -72,28 +74,35 @@ if args.install_steamcmd:
         this.install_steamcmd()
 
 elif args.install_ark:
-    # Loop to get the game type from the user.
-    while True:
-        user_input = raw_input("ARK Classic (c) or Survival of the Fittest (s)? [c/s]: ")
-        user_input = user_input.lower()
-        if user_input == 'c' or user_input == '':
-            appid = '376030'
-            break
-        elif user_input == 's':
-            appid = '445400'
-            break
-        else:
-            print "Invalid option: {}. Expecting C/c or S/s.".format(user_input)
+    if server_config['ARK']['appid'] == '376030':
+        appid = '376030'
+        print "Installing ARK files. This will take a while. I suggest making some tea."
+        time.sleep(5)
+        this = SteamCmd(appid=appid)
+        this.install_ark()
 
-    print "Installing ARK files. This will take a while. I suggest making some tea."
-    this = SteamCmd(appid=appid)
-    this.install_ark()
+    elif server_config['ARK']['appid'] == '445400':
+        appid = '445400'
+        print "Installing ARK files. This will take a while. I suggest making some tea."
+        time.sleep(5)
+        this = SteamCmd(appid=appid)
+        this.install_ark()
+
+    else:
+        sys.exit('Something is wrong with your configuration. I expected appid 376030 or 445400, but received {}')\
+            .format(server_config['ARK']['appid'])
 
 elif args.configure:
     print "Configure!"
 
 elif args.update:
-    print "Update!"
+    this = ServerQuery(ip='127.0.0.1', port=27015)
+    result = this.status()
+    if result['status']:
+        sys.exit("Server is currently online! Stop the server first.")
+    else:
+        update = SteamCmd(appid=server_config['ARK']['appid'])
+        update.update_gamefiles()
 
 elif args.start:
     print "Start"
