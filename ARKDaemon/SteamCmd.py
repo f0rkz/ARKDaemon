@@ -72,35 +72,6 @@ class SteamCmd(object):
         else:
             sys_exit("Unsupported system. I detected {}.".format(self.platform))
 
-    def update_gamefiles(self):
-        if self.platform == "Windows":
-            steamcmd_run = '{steamcmd_path}/steamcmd.exe ' \
-                           '+login anonymous ' \
-                           '+force_install_dir {install_dir} ' \
-                           '+app_update {my_appid} ' \
-                           'validate ' \
-                           '+quit ' \
-                .format(steamcmd_path=self.steamcmd_path,
-                        base_dir=self.base_dir,
-                        install_dir=self.install_dir,
-                        my_appid=self.appid,
-                        )
-            subprocess.call(steamcmd_run, shell=True)
-
-        elif self.platform == "Linux":
-            steamcmd_run = '{steamcmd_path}/steamcmd.sh ' \
-                           '+login anonymous ' \
-                           '+force_install_dir {install_dir} ' \
-                           '+app_update {my_appid} ' \
-                           'validate ' \
-                           '+quit ' \
-                .format(steamcmd_path=self.steamcmd_path,
-                        base_dir=self.base_dir,
-                        install_dir=self.install_dir,
-                        my_appid=self.appid,
-                        )
-            subprocess.call(steamcmd_run, shell=True)
-
     def install_mod(self):
         if self.platform == "Windows":
             pass

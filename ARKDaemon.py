@@ -79,14 +79,14 @@ elif args.install_ark:
         print "Installing ARK files. This will take a while. I suggest making some tea."
         time.sleep(5)
         this = SteamCmd(appid=appid)
-        this.install_ark()
+        this.install_gamefiles()
 
     elif server_config['ARK']['appid'] == '445400':
         appid = '445400'
         print "Installing ARK files. This will take a while. I suggest making some tea."
         time.sleep(5)
         this = SteamCmd(appid=appid)
-        this.install_ark()
+        this.install_gamefiles()
 
     else:
         sys.exit('Something is wrong with your configuration. I expected appid 376030 or 445400, but received {}')\
@@ -102,7 +102,7 @@ elif args.update:
         sys.exit("Server is currently online! Stop the server first.")
     else:
         update = SteamCmd(appid=server_config['ARK']['appid'])
-        update.update_gamefiles()
+        update.install_gamefiles()
 
 elif args.start:
     print "Start"
