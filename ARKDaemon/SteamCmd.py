@@ -72,7 +72,7 @@ class SteamCmd(object):
         else:
             sys_exit("Unsupported system. I detected {}.".format(self.platform))
 
-    def update_gamefiles(self, appid):
+    def update_gamefiles(self):
         if self.platform == "Windows":
             steamcmd_run = '{steamcmd_path}/steamcmd.exe ' \
                            '+login anonymous ' \
@@ -100,3 +100,9 @@ class SteamCmd(object):
                         my_appid=self.appid,
                         )
             subprocess.call(steamcmd_run, shell=True)
+
+    def install_mod(self):
+        if self.platform == "Windows":
+            pass
+        elif self.platform == "Linux":
+            pass

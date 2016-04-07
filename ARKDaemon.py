@@ -1,13 +1,19 @@
 import sys
+import os
 
-# import ConfigParser
-# import sqlite3
+import ConfigParser
 import argparse
 
 # Classes from project
 from ARKDaemon.SteamCmd import SteamCmd
 from ARKDaemon.ServerQuery import ServerQuery
+from ARKDaemon.ServerRcon import ServerRcon
 
+# from ARKDaemon.ArkBackup import ArkBackup
+# from ARKDaemon.ConfigureArk import ConfigureArk
+# from ARKDaemon.ServerRcon import ServerRcon
+
+# List of Appids capable in this tool:
 # 376030 ark dedi server
 # 445400 ark survival of the fittest dedi server
 
@@ -18,16 +24,43 @@ argparser.add_argument("-i", "--install_ark", help="Install the gameserver files
 argparser.add_argument("-c", "--configure", help="Run the configuration tool.", action="store_true")
 argparser.add_argument("-u", "--update", help="Update the gameserver files.", action="store_true")
 argparser.add_argument("--status", help="Get the local server's status", action="store_true")
-argparser.add_argument("--remote_status", nargs='*',
-                       help="Run a status on gameserver. Accepts two values: --remote_status server port")
+argparser.add_argument("--remote_status", metavar=('ip/host', 'port'), nargs='*',
+                       help="Run a status on gameserver. Accepts two values: --remote_status ip/host port")
 argparser.add_argument("--start", help="Start the server", action="store_true")
 argparser.add_argument("--stop", help="Stop the server", action="store_true")
 argparser.add_argument("--safe", help="Save the server world before doing update/stop/etc. actions",
                        action="store_true")
+argparser.add_argument("--save_world", help="Run the saveworld command. This may cause intermittent lag!",
+                       action="store_true")
 argparser.add_argument("-f", "--force", help="Force the operation without abandon.", action="store_true")
 argparser.add_argument("--install_mod", help="Installs a mod. Example: ARKDaemon.py install_mod 655581765")
 argparser.add_argument("-b", "--backup", help="Backs up ARK world data.")
+argparser.add_argument("--debug", help="Debug flag for more output.", action="store_true")
 args = argparser.parse_args()
+
+parser = ConfigParser.RawConfigParser()
+if os.path.isfile(os.path.join('server.conf')):
+    parser.read(os.path.join('server.conf'))
+    server_config = parser._sections
+else:
+    print "It looks like you do not have a server.conf." \
+          "I recommend copying server.conf_EXAMPLE to server.conf and editing it to your needs."
+
+if args.debug:
+    DEBUG = True
+else:
+    DEBUG = False
+
+# Spit out the configuration dictionary
+if DEBUG and server_config:
+    print 'I am loading the following configuration:'
+    print 'Session Name: {}'.format(server_config['ARK']['sessionname'])
+    if server_config['ARK']['serverpassword'] == '':
+        print 'No join password.'
+    else:
+        print 'Join password: {}'.format(server_config['ARK']['serverpassword'])
+    print 'Server Admin Password: {}'.format(server_config['ARK']['serveradminpassword'])
+    print 'Map: {}'.format(server_config['ARK']['map'])
 
 if args.install_steamcmd:
     print "Checking and installing steamcmd."
@@ -37,7 +70,7 @@ if args.install_steamcmd:
     else:
         this.install_steamcmd()
 
-if args.install_ark and not args.start and not args.stop and not args.update:
+elif args.install_ark:
     # Loop to get the game type from the user.
     while True:
         user_input = raw_input("ARK Classic (c) or Survival of the Fittest (s)? [c/s]: ")
@@ -55,25 +88,34 @@ if args.install_ark and not args.start and not args.stop and not args.update:
     this = SteamCmd(appid=appid)
     this.install_ark()
 
-if args.configure and not args.start and not args.stop and not args.update:
+elif args.configure:
     print "Configure!"
 
-if args.update:
+elif args.update:
     print "Update!"
 
-if args.start:
+elif args.start:
     print "Start"
 
-if args.stop:
+elif args.stop:
     print "STAHP"
 
-if args.install_mod:
+elif args.save_world:
+    this = ServerQuery(ip='127.0.0.1', port=27015)
+    result = this.status()
+    if result['status']:
+        rcon = ServerRcon(ip='127.0.0.1', port=32330, password=server_config['ARK']['ServerAdminPassword'],
+                          ark_command='saveworld')
+    else:
+        sys.exit("Server did not respond to a simple query. It may be offline!")
+
+elif args.install_mod:
     print "Install mod!"
 
-if args.backup:
+elif args.backup:
     print "Backup!"
 
-if args.remote_status:
+elif args.remote_status:
     if len(args.remote_status) > 2 or len(args.remote_status) < 2:
         sys.exit("Improper values given. Please supply: [ip] [port]")
     elif len(args.remote_status) == 2:
@@ -90,7 +132,7 @@ if args.remote_status:
             print "Status: Offline"
             print "Possible issue with returned data, the server does not exist, or the server is offline."
 
-if args.status:
+elif args.status:
     this = ServerQuery(ip='127.0.0.1', port=27015)
     result = this.status()
     if result['status']:
@@ -104,7 +146,6 @@ if args.status:
         print "Status: Offline"
         print "Possible issue with returned data, the server does not exist, or the server is offline."
 
-# Test steamcmd install
-# install = SteamCmd('376030')
-# install.install_steamcmd()
-# install.install_gamefiles('376030')
+else:
+    sys.exit("No options given. Use --help for more information.")
+

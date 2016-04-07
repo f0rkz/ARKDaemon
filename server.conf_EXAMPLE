@@ -1,0 +1,6 @@
+[ARK]
+SessionName = ARKDaemon Server
+ServerPassword =
+ServerAdminPassword = changeMe
+Map = TheIsland
+#Mods = 1234,5678,9101112   # Uncomment this and add your mods list separated by commas

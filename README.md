@@ -45,6 +45,11 @@ You may need to reboot to make sure all of these settings took hold.
 
 For more information, [check this link](http://ark.gamepedia.com/Dedicated_Server_Setup).
 
+# Configuration
+Configuration for the base server settings is stored in the server.conf file. The provided `server.conf_EXAMPLE` file is
+enough information to get your instance running. Copy the `server.conf_EXAMPLE` to `server.conf` and configure your common
+ARK settings here.
+
 # Program Structure
 
 ```
