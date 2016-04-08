@@ -6,13 +6,15 @@ import ConfigParser
 import ast
 import argparse
 from colorama import init, Fore, Style
-init()
 
 # Classes from project
 from ARKDaemon.SteamCmd import SteamCmd
 from ARKDaemon.ServerQuery import ServerQuery
 from ARKDaemon.ServerRcon import ServerRcon
 from ARKDaemon.ArkServer import ArkServer
+
+# Required for colorama
+init()
 
 # from ARKDaemon.ArkBackup import ArkBackup
 # from ARKDaemon.ConfigureArk import ConfigureArk
@@ -38,8 +40,10 @@ argparser.add_argument("--safe", help="Save the server world before doing update
 argparser.add_argument("--save_world", help="Run the saveworld command. This may cause intermittent lag!",
                        action="store_true")
 argparser.add_argument("-f", "--force", help="Force the operation without abandon.", action="store_true")
-argparser.add_argument("--install_mod", nargs = '?', metavar='mod_id', help="Installs a mod. Example: ARKDaemon.py install_mod 655581765")
-argparser.add_argument("--update_mods", help="Runs an update/install of all mods listed in sever.conf", action="store_true")
+argparser.add_argument("--install_mod", nargs='?', metavar='mod_id',
+                       help="Installs a mod. Example: ARKDaemon.py install_mod 655581765")
+argparser.add_argument("--update_mods", help="Runs an update/install of all mods listed in sever.conf",
+                       action="store_true")
 argparser.add_argument("-b", "--backup", help="Backs up ARK world data.")
 argparser.add_argument("--debug", help="Debug flag for more output.", action="store_true")
 args = argparser.parse_args()
@@ -51,7 +55,7 @@ if os.path.isfile(os.path.join('server.conf')):
     try:
         if server_config['ARK']['mods']:
             mod_list = ast.literal_eval(server_config['ARK']['mods'])
-    except(KeyError):
+    except KeyError:
         pass
 else:
     print "It looks like you do not have a server.conf." \
@@ -99,7 +103,7 @@ elif args.install_ark:
         this.install_gamefiles()
 
     else:
-        sys.exit('Something is wrong with your configuration. I expected appid 376030 or 445400, but received {}')\
+        sys.exit('Something is wrong with your configuration. I expected appid 376030 or 445400, but received {}') \
             .format(server_config['ARK']['appid'])
 
 # elif args.configure:
@@ -175,4 +179,3 @@ elif args.status:
 
 else:
     sys.exit("No options given. Use --help for more information.")
-

@@ -24,11 +24,11 @@ class ArkServer(object):
         if os.path.isfile(self.pid_file):
             # Get a list of active PID's and see if the PID in the file exists. If not, delete the PID file.
             with open(self.pid_file, 'r') as pidfile:
-                pid = pidfile.read()
+                pid = int(pidfile.read())
             try:
-                p = psutil.Process(pid)
+                psutil.Process(pid)
                 sys.exit('ARK is running. Shut the server down with --stop before starting it.')
-            except:
+            except psutil.NoSuchProcess:
                 os.remove(self.pid_file)
                 pid = ''
 
@@ -50,7 +50,7 @@ class ArkServer(object):
         try:
             if self.config['ARK']['mods']:
                 my_mods = ",".join(self.config['ARK']['mods'])
-        except(KeyError):
+        except KeyError:
             my_mods = ''
 
         # Get the start command formed.
@@ -77,8 +77,8 @@ class ArkServer(object):
         # Start the server, you nut!
         server_process = subprocess.Popen(start_cmd, shell=False)
         pid = server_process.pid
-        with open(self.pid_file, 'w') as file:
-            file.write('{}'.format(pid))
+        with open(self.pid_file, 'w') as my_pid_file:
+            my_pid_file.write('{}'.format(pid))
         print "Server launched! Please allow 5 to 10 minutes for server to start"
 
     def stop(self, safe=False):

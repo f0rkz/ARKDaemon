@@ -113,7 +113,6 @@ class SteamCmd(object):
             copytree(workshop_install_path, post_install_path, symlinks=False)
             print "All operations completed. Mod ID: {} copied to: {}".format(self.mod_id, post_install_path)
 
-
         elif self.platform == "Linux":
             steamcmd_run = '{steamcmd_path}\steamcmd.sh ' \
                            '+@NoPromptForPassword 1 ' \
