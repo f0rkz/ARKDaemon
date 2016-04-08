@@ -41,6 +41,8 @@ class ArkServer(object):
         # Format the password command so we can spit it out properly
         if self.config['ARK']['serverpassword'] is not '':
             server_password = "={}".format(self.config['ARK']['serverpassword'])
+        else:
+            server_password = ''
 
         # Make a comma seperated list of the mods from config
         try:
