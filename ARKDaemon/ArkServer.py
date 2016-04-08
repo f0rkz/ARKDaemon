@@ -1,7 +1,9 @@
 import os
+import sys
 import platform
 import psutil
 import subprocess
+import signal
 from ARKDaemon.ServerRcon import ServerRcon
 
 
@@ -76,7 +78,7 @@ class ArkServer(object):
         server_process = subprocess.Popen(start_cmd, shell=False)
         pid = server_process.pid
         with open(self.pid_file, 'w') as file:
-            file.write(pid)
+            file.write('{}'.format(pid))
         print "Server launched! Please allow 5 to 10 minutes for server to start"
 
     def stop(self, safe=False):
@@ -95,7 +97,7 @@ class ArkServer(object):
 
             print "Killing process with PID: {}".format(pid)
             p = psutil.Process(pid)
-            p.terminate()
+            p.send_signal(signal.SIGTERM)
             os.remove(self.pid_file)
             pid = ''
             print "All stop operations are complete."
