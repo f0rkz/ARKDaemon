@@ -2,6 +2,9 @@
 # Use 'appid = 376030' for ARK Classic, 'appid = 445400' for survival of the fittest
 appid = 376030
 
+# This is the ARK: Survival Evolved client. Used for workshop items
+ark_appid = 346110
+
 # This is the hostname or server name of your server.
 SessionName = ARKDaemon Server
 

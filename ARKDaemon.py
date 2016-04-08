@@ -126,7 +126,7 @@ elif args.save_world:
         sys.exit("Server did not respond to a simple query. It may be offline!")
 
 elif args.install_mod:
-    this = SteamCmd(appid=server_config['ARK']['appid'], mod_id=args.install_mod)
+    this = SteamCmd(appid=server_config['ARK']['ark_appid'], mod_id=args.install_mod)
     this.install_mod()
 
 elif args.update_mods:
