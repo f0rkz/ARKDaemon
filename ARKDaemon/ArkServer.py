@@ -49,9 +49,18 @@ class ArkServer(object):
         # Make a comma seperated list of the mods from config
         try:
             if self.config['ARK']['mods']:
-                my_mods = ",".join(self.config['ARK']['mods'])
+                my_mods = str(self.config['ARK']['mods']).strip('[]')
+                my_mods = my_mods.replace("'", "")
+                my_mods = my_mods.replace(" ", "")
         except KeyError:
             my_mods = ''
+
+        # Catch a custom map mod id
+        try:
+            if self.config['ARK']['mapmodid']:
+                map_mod_id = '-mapmodid={}'.format(self.config['ARK']['mapmodid'])
+        except KeyError:
+            map_mod_id = ''
 
         # Get the start command formed.
         start_cmd = "{my_binary} " \
@@ -65,7 +74,8 @@ class ArkServer(object):
                     "?ServerAdminPassword={adminpass}" \
                     "?ServerPassword{serverpass}" \
                     "?SessionName={sessionname}" \
-                    "?listen"\
+                    "?listen" \
+                    "{mapid}" \
             .format(my_binary=binary,
                     map=self.config['ARK']['map'],
                     mods=my_mods,
@@ -73,6 +83,7 @@ class ArkServer(object):
                     adminpass=self.config['ARK']['serveradminpassword'],
                     serverpass=server_password,
                     sessionname=self.config['ARK']['sessionname'],
+                    mapid=map_mod_id,
                     )
         # Start the server, you nut!
         server_process = subprocess.Popen(start_cmd, shell=False)

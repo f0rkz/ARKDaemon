@@ -21,9 +21,13 @@ ServerAdminPassword = changeMe
 # The map to start the server with. If you want a custom map, enter the name here.
 Map = TheIsland
 
+# For custom maps you need to uncomment this and put your map mod id here.
+# Valhalla's map mod id as an example
+#mapmodid = 504122600
+
 # Mods are ordered in a python list. Example should get you started.
 # ['item1', 'item2', 'item3', 'etc...']
-#Mods = ['1234', '5678', '9101112']
+#Mods = ['504122600']
 
 [GameUserSettings]
 # Testing phase. Adding GameUserSettings parameters here...

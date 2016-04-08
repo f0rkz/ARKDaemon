@@ -131,7 +131,7 @@ elif args.save_world:
     this = ServerQuery(ip='127.0.0.1', port=27015)
     result = this.status()
     if result['status']:
-        rcon = ServerRcon(ip='127.0.0.1', port=32330, password=server_config['ARK']['ServerAdminPassword'],
+        rcon = ServerRcon(ip='127.0.0.1', port=32330, password=server_config['ARK']['serveradminpassword'],
                           ark_command='saveworld')
     else:
         sys.exit("Server did not respond to a simple query. It may be offline!")
