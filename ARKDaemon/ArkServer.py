@@ -73,7 +73,7 @@ class ArkServer(object):
                     sessionname=self.config['ARK']['sessionname'],
                     )
         # Start the server, you nut!
-        server_process = subprocess.call(start_cmd, shell=False)
+        server_process = subprocess.Popen(start_cmd, shell=False)
         pid = server_process.pid
         with open(self.pid_file, 'w') as file:
             file.write(pid)
