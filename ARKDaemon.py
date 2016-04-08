@@ -46,8 +46,11 @@ parser = ConfigParser.RawConfigParser()
 if os.path.isfile(os.path.join('server.conf')):
     parser.read(os.path.join('server.conf'))
     server_config = parser._sections
-    if server_config['ARK']['mods']:
-        mod_list = ast.literal_eval(server_config['ARK']['mods'])
+    try:
+        if server_config['ARK']['mods']:
+            mod_list = ast.literal_eval(server_config['ARK']['mods'])
+    except(KeyError):
+        pass
 else:
     print "It looks like you do not have a server.conf." \
           "I recommend copying server.conf_EXAMPLE to server.conf and editing it to your needs."
