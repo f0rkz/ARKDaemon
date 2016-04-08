@@ -66,9 +66,9 @@ class ArkServer(object):
                     map=self.config['ARK']['map'],
                     mods=my_mods,
                     players=self.config['ARK']['players'],
-                    adminpass=self.config['ARK']['ServerAdminPassword'],
+                    adminpass=self.config['ARK']['serveradminpassword'],
                     serverpass=server_password,
-                    sessionname=self.config['ARK']['SessionName'],
+                    sessionname=self.config['ARK']['sessionname'],
                     )
         # Start the server, you nut!
         server_process = subprocess.call(start_cmd, shell=False)
