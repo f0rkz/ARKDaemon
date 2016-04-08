@@ -47,7 +47,7 @@ class ArkServer(object):
             if self.config['ARK']['mods']:
                 my_mods = ",".join(self.config['ARK']['mods'])
         except(KeyError):
-            pass
+            my_mods = ''
 
         # Get the start command formed.
         start_cmd = "{my_binary} " \
