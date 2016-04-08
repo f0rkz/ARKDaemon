@@ -1,5 +1,6 @@
 import os
 import sys
+from shutil import copytree, rmtree
 import os.path
 import platform
 import subprocess
@@ -9,7 +10,7 @@ import zipfile
 
 
 class SteamCmd(object):
-    def __init__(self, appid):
+    def __init__(self, appid, mod_id=False):
         # type: (object) -> object
         self.os = os.name
         self.platform = platform.system()
@@ -18,11 +19,12 @@ class SteamCmd(object):
         self.steamcmd_path = os.path.join('steamcmd')
         self.install_dir = os.path.join(os.getcwd(), 'ARK')
         self.appid = appid
+        self.mod_id = mod_id
 
     def install_steamcmd(self, force=False):
         # Installs steamcmd for windows
         if self.platform == "Windows":
-            if os.path.exists(os.path.join(self.steamcmd_path, 'steamcmd.exe')) and force == False:
+            if os.path.exists(os.path.join(self.steamcmd_path, 'steamcmd.exe')) and force is False:
                 print "Steamcmd already installed. No need for reinstall."
             else:
                 urllib.urlretrieve(self.steamcmd_download_windows, os.path.join(self.steamcmd_path, 'steamcmd.zip'))
@@ -46,6 +48,7 @@ class SteamCmd(object):
     def install_gamefiles(self):
         if self.platform == "Windows":
             steamcmd_run = '{steamcmd_path}\steamcmd.exe ' \
+                           '+@NoPromptForPassword 1 ' \
                            '+login anonymous ' \
                            '+force_install_dir {install_dir} ' \
                            '+app_update {my_appid} ' \
@@ -59,6 +62,7 @@ class SteamCmd(object):
 
         elif self.platform == "Linux":
             steamcmd_run = '{steamcmd_path}/steamcmd.sh ' \
+                           '+@NoPromptForPassword 1 ' \
                            '+login anonymous ' \
                            '+force_install_dir {install_dir} ' \
                            '+app_update {my_appid} ' \
@@ -76,6 +80,70 @@ class SteamCmd(object):
 
     def install_mod(self):
         if self.platform == "Windows":
-            pass
+            steamcmd_run = '{steamcmd_path}\steamcmd.exe ' \
+                           '+@NoPromptForPassword 1 ' \
+                           '+login anonymous ' \
+                           '+workshop_download_item {my_appid} {my_modid} ' \
+                           '+quit' \
+                .format(steamcmd_path=self.steamcmd_path,
+                        my_appid=self.appid,
+                        my_modid=self.mod_id)
+            subprocess.call(steamcmd_run, shell=True)
+            workshop_install_path = os.path.join(self.steamcmd_path,
+                                                 'steamapps',
+                                                 'workshop',
+                                                 'content',
+                                                 self.appid,
+                                                 self.mod_id,
+                                                 'WindowsNoEditor'
+                                                 )
+            post_install_path = os.path.join(self.install_dir,
+                                             'ShooterGame',
+                                             'Content',
+                                             'Mods',
+                                             self.mod_id
+                                             )
+            # Delete the current mod directory if any exists.
+            if os.path.exists(post_install_path):
+                print "Deleting current mod contents and replacing it."
+                rmtree(post_install_path, ignore_errors=True)
+
+            # Copy the contents of the mod to the proper location
+            print "Copying mod contents to ARK"
+            copytree(workshop_install_path, post_install_path, symlinks=False)
+            print "All operations completed. Mod ID: {} copied to: {}".format(self.mod_id, post_install_path)
+
+
         elif self.platform == "Linux":
-            pass
+            steamcmd_run = '{steamcmd_path}\steamcmd.sh ' \
+                           '+@NoPromptForPassword 1 ' \
+                           '+login anonymous ' \
+                           '+workshop_download_item {my_appid} {my_modid} ' \
+                           '+quit' \
+                .format(steamcmd_path=self.steamcmd_path,
+                        my_appid=self.appid,
+                        my_modid=self.mod_id)
+            subprocess.call(steamcmd_run, shell=True)
+            workshop_install_path = os.path.join(self.steamcmd_path,
+                                                 'steamapps',
+                                                 'workshop',
+                                                 'content',
+                                                 self.appid,
+                                                 self.mod_id,
+                                                 'LinuxNoEditor'
+                                                 )
+            post_install_path = os.path.join(self.install_dir,
+                                             'ShooterGame',
+                                             'Content',
+                                             'Mods',
+                                             self.mod_id
+                                             )
+            # Delete the current mod directory if any exists.
+            if os.path.exists(post_install_path):
+                print "Deleting current mod contents and replacing it."
+                rmtree(post_install_path, ignore_errors=True)
+
+            # Copy the contents of the mod to the proper location
+            print "Copying mod contents to ARK"
+            copytree(workshop_install_path, post_install_path, symlinks=False)
+            print "All operations completed. Mod ID: {} copied to: {}".format(self.mod_id, post_install_path)

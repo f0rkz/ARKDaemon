@@ -3,6 +3,7 @@ import os
 import time
 
 import ConfigParser
+import ast
 import argparse
 from colorama import init, Fore, Style
 init()
@@ -35,7 +36,8 @@ argparser.add_argument("--safe", help="Save the server world before doing update
 argparser.add_argument("--save_world", help="Run the saveworld command. This may cause intermittent lag!",
                        action="store_true")
 argparser.add_argument("-f", "--force", help="Force the operation without abandon.", action="store_true")
-argparser.add_argument("--install_mod", help="Installs a mod. Example: ARKDaemon.py install_mod 655581765")
+argparser.add_argument("--install_mod", nargs = '?', metavar='mod_id', help="Installs a mod. Example: ARKDaemon.py install_mod 655581765")
+argparser.add_argument("--update_mods", help="Runs an update/install of all mods listed in sever.conf", action="store_true")
 argparser.add_argument("-b", "--backup", help="Backs up ARK world data.")
 argparser.add_argument("--debug", help="Debug flag for more output.", action="store_true")
 args = argparser.parse_args()
@@ -44,6 +46,8 @@ parser = ConfigParser.RawConfigParser()
 if os.path.isfile(os.path.join('server.conf')):
     parser.read(os.path.join('server.conf'))
     server_config = parser._sections
+    if server_config['ARK']['mods']:
+        mod_list = ast.literal_eval(server_config['ARK']['mods'])
 else:
     print "It looks like you do not have a server.conf." \
           "I recommend copying server.conf_EXAMPLE to server.conf and editing it to your needs."
@@ -64,6 +68,7 @@ if DEBUG and server_config:
         print 'Join password: {}'.format(server_config['ARK']['serverpassword'])
     print 'Server Admin Password: {}'.format(server_config['ARK']['serveradminpassword'])
     print 'Map: {}'.format(server_config['ARK']['map'])
+    print 'Mods: {}'.format(mod_list)
 
 if args.install_steamcmd:
     print "Checking and installing steamcmd."
@@ -121,7 +126,11 @@ elif args.save_world:
         sys.exit("Server did not respond to a simple query. It may be offline!")
 
 elif args.install_mod:
-    print "Install mod!"
+    this = SteamCmd(appid=server_config['ARK']['appid'], mod_id=args.install_mod[0])
+    this.install_mod()
+
+elif args.update_mods:
+    print "Update mods!"
 
 elif args.backup:
     print "Backup!"

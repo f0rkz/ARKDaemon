@@ -14,5 +14,6 @@ ServerAdminPassword = changeMe
 # The map to start the server with. If you want a custom map, enter the name here.
 Map = TheIsland
 
-# Uncomment this and add your mods list separated by commas
-#Mods = 1234,5678,9101112
+# Mods are ordered in a python list. Example should get you started.
+# ['item1', 'item2', 'item3', 'etc...']
+#Mods = ['1234', '5678', '9101112']
