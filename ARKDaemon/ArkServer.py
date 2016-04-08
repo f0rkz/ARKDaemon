@@ -93,7 +93,7 @@ class ArkServer(object):
 
             # Move forward to stop the server by PID. PID file defined as self.pid_file
             with open(self.pid_file, 'r') as pidfile:
-                pid = pidfile.read()
+                pid = int(pidfile.read())
 
             print "Killing process with PID: {}".format(pid)
             p = psutil.Process(pid)
