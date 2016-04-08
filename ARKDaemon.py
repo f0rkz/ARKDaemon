@@ -12,6 +12,7 @@ init()
 from ARKDaemon.SteamCmd import SteamCmd
 from ARKDaemon.ServerQuery import ServerQuery
 from ARKDaemon.ServerRcon import ServerRcon
+from ARKDaemon.ArkServer import ArkServer
 
 # from ARKDaemon.ArkBackup import ArkBackup
 # from ARKDaemon.ConfigureArk import ConfigureArk
@@ -24,7 +25,8 @@ from ARKDaemon.ServerRcon import ServerRcon
 argparser = argparse.ArgumentParser(description="ARKDaemon: A Python Tool for ARK Dedicated Servers")
 argparser.add_argument("-s", "--install_steamcmd", help="Install Steamcmd. (Required)", action="store_true")
 argparser.add_argument("-i", "--install_ark", help="Install the gameserver files.", action="store_true")
-argparser.add_argument("-c", "--configure", help="Run the configuration tool.", action="store_true")
+# Thinking of doing away from configure. Time for a design change
+# argparser.add_argument("-c", "--configure", help="Run the configuration tool.", action="store_true")
 argparser.add_argument("-u", "--update", help="Update the gameserver files.", action="store_true")
 argparser.add_argument("--status", help="Get the local server's status", action="store_true")
 argparser.add_argument("--remote_status", metavar=('ip/host', 'port'), nargs='*',
@@ -53,7 +55,7 @@ if os.path.isfile(os.path.join('server.conf')):
         pass
 else:
     print "It looks like you do not have a server.conf." \
-          "I recommend copying server.conf_EXAMPLE to server.conf and editing it to your needs."
+          "Copy server.conf_EXAMPLE to server.conf and edit it to your needs."
 
 if args.debug:
     DEBUG = True
@@ -100,8 +102,8 @@ elif args.install_ark:
         sys.exit('Something is wrong with your configuration. I expected appid 376030 or 445400, but received {}')\
             .format(server_config['ARK']['appid'])
 
-elif args.configure:
-    print "Configure!"
+# elif args.configure:
+#     print "Configure!"
 
 elif args.update:
     this = ServerQuery(ip='127.0.0.1', port=27015)
@@ -114,10 +116,12 @@ elif args.update:
         update.install_gamefiles()
 
 elif args.start:
-    print "Start"
+    this = ArkServer(config=server_config)
+    this.start()
 
 elif args.stop:
-    print "STAHP"
+    this = ArkServer(config=server_config)
+    this.stop()
 
 elif args.save_world:
     this = ServerQuery(ip='127.0.0.1', port=27015)

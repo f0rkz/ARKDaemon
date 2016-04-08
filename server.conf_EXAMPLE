@@ -1,9 +1,13 @@
+# Main configuration for ARKDaemon and launch commands.
 [ARK]
 # Use 'appid = 376030' for ARK Classic, 'appid = 445400' for survival of the fittest
 appid = 376030
 
 # This is the ARK: Survival Evolved client. Used for workshop items
 ark_appid = 346110
+
+# Maximum amount of players for the server
+players = 70
 
 # This is the hostname or server name of your server.
 SessionName = ARKDaemon Server
@@ -20,3 +24,6 @@ Map = TheIsland
 # Mods are ordered in a python list. Example should get you started.
 # ['item1', 'item2', 'item3', 'etc...']
 #Mods = ['1234', '5678', '9101112']
+
+[GameUserSettings]
+# Testing phase. Adding GameUserSettings parameters here...
