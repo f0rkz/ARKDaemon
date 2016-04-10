@@ -1,5 +1,6 @@
 import os
 import platform
+import shlex
 import signal
 import subprocess
 import sys
@@ -88,7 +89,7 @@ class ArkServer(object):
                     mapid=map_mod_id,
                     )
         # Start the server, you nut!
-        server_process = subprocess.Popen(start_cmd, shell=False)
+        server_process = subprocess.Popen(shlex.split(start_cmd), shell=False)
         pid = server_process.pid
         with open(self.pid_file, 'w') as my_pid_file:
             my_pid_file.write('{}'.format(pid))
