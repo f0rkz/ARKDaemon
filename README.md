@@ -26,7 +26,7 @@ Follow the link and install the msi Microsoft so kindly provided.
 
 ###Linux
  - lib32gcc1: `sudo apt-get install lib32gcc1`
- - python2.7 or higher: `sudo apt-get install python`
+ - python2.7 or higher: `sudo apt-get install python python-dev`
  - pip: `sudo apt-get install python-pip`
 
 ####Linux System Configuration
