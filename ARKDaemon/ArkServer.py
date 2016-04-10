@@ -1,9 +1,11 @@
 import os
-import sys
 import platform
-import psutil
-import subprocess
 import signal
+import subprocess
+import sys
+
+import psutil
+
 from ARKDaemon.ServerRcon import ServerRcon
 
 
@@ -33,9 +35,9 @@ class ArkServer(object):
                 pid = ''
 
         # Get the correct binary to start the server
-        if self.platform is "Windows":
+        if self.platform == "Windows":
             binary = os.path.join('ARK', 'ShooterGame', 'Binaries', 'Win64', 'ShooterGameServer.exe')
-        elif self.platform is "Linux":
+        elif self.platform == "Linux":
             binary = os.path.join('ARK', 'ShooterGame', 'Binaries', 'Linux', 'ShooterGameServer')
         else:
             sys.exit("You are running on an unsupported platform: {}".format(self.platform))
