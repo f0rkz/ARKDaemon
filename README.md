@@ -17,6 +17,13 @@ In order to run this script the following needs to be installed:
 
 * Make sure python is configured in Windows PATH Environment
 
+You may also run into an issue with installing package requirements. If you get this error while running:
+`pip install -r requirements.txt`:
+
+`error: Microsoft Visual C++ 9.0 is required (Unable to find vcvarsall.bat). Get it from http://aka.ms/vcpython27`
+
+Follow the link and install the msi Microsoft so kindly provided.
+
 ###Linux
  - lib32gcc1: `sudo apt-get install lib32gcc1`
  - python2.7 or higher: `sudo apt-get install python`
