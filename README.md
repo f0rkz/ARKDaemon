@@ -31,6 +31,9 @@ Follow the link and install the msi Microsoft so kindly provided.
 
 ####Linux System Configuration
 
+ARK Recommends the following settings in your Linux environment. [Click here for more information](http://ark.gamepedia.com/Dedicated_Server_Setup).
+
+
 Add the following to `/etc/sysctl.conf`
 
 `fs.file-max=100000`
@@ -50,12 +53,61 @@ Add the following to `/etc/pam.d/common-session`
 
 You may need to reboot to make sure all of these settings took hold.
 
-For more information, [check this link](http://ark.gamepedia.com/Dedicated_Server_Setup).
+## Script Installation
+
+###Step 1:
+Clone the [github repository](https://github.com/f0rkz/ARKDaemon):
+
+`git clone https://github.com/f0rkz/ARKDaemon.git`
+
+This will create the directory ARKDaemon. This directory will contain steamcmd, ARK's gamefiles, and everything you
+need to run ARK: Dedicated Server.
+
+###Step 2:
+Install the python requirements by the usual methods.
+
+`pip install -r requirements.txt`
+
+You may need to run this as root (or administrator for you Windows folks) if you are not using an environment.
+
+##Install steamcmd
+Steamcmd is required to install and update gameserver files and mods. In order to initiate steamcmd run the following
+command:
+
+`python ARKDaemon.py --install_steamcmd`
+
+##Install ARK
+Now you need to init your ARK install. Run the following (it will take a while...)
+
+`python ARKDaemon.py --install_ark`
+
 
 # Configuration
 Configuration for the base server settings is stored in the server.conf file. The provided `server.conf_EXAMPLE` file is
 enough information to get your instance running. Copy the `server.conf_EXAMPLE` to `server.conf` and configure your common
 ARK settings here.
+
+This file will change over time as the application evolves. Will attempt to notify in commit messages if new options are
+added.
+
+#Operating the Server
+
+##Starting the server
+`python ARKDaemon.py --start`
+
+##Stopping the server
+`python ARKDaemon.py --stop`
+
+##Saving the World File
+This will run the saveworld command on the server (needs to be running).
+
+`python ARKDaemon.py --save_world`
+
+##Server Backup
+* Currently under production.
+
+##Local Status
+`python ARKDaemon.py --status`
 
 # Program Structure
 

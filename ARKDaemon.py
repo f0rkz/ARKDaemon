@@ -1,12 +1,13 @@
-import sys
-import os
-import time
+#!/usr/bin/python
 
 import ConfigParser
-import ast
 import argparse
-from colorama import init, Fore, Style
+import ast
+import os
+import sys
+import time
 
+from colorama import init, Fore, Style
 # Classes from project
 from ARKDaemon.SteamCmd import SteamCmd
 from ARKDaemon.ServerQuery import ServerQuery
@@ -58,7 +59,7 @@ if os.path.isfile(os.path.join('server.conf')):
     except KeyError:
         pass
 else:
-    print "It looks like you do not have a server.conf." \
+    print "It looks like you do not have a server.conf. " \
           "Copy server.conf_EXAMPLE to server.conf and edit it to your needs."
 
 if args.debug:
