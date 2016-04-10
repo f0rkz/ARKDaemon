@@ -6,6 +6,15 @@ Please read over the README.md file thoroughly as important information is inclu
 
 This tool is currently in development. Please submit issues if any come up!
 
+# News
+
+4/10/2016: [Commit c72f655](https://github.com/f0rkz/ARKDaemon/tree/c72f655cfa2b8427907e046f66a9783dc3438caa) Version 0.01 ready for production.
+
+##Currently known issues and untested features:
+* Backup is still not ready for production. Will work on that branch soon!
+* Complete map changes from TheIsland may cause your server not to operate. Still need a lot more testing
+* Mod install should work but it is currently untested.
+
 # Installation
 
 ##Prerequisites
