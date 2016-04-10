@@ -1,12 +1,12 @@
 import os
-import sys
-from shutil import copytree, rmtree
 import os.path
 import platform
 import subprocess
+import sys
 import tarfile
 import urllib
 import zipfile
+from shutil import copytree, rmtree
 
 
 class SteamCmd(object):
@@ -69,7 +69,6 @@ class SteamCmd(object):
                            'validate ' \
                            '+quit ' \
                 .format(steamcmd_path=self.steamcmd_path,
-                        base_dir=self.base_dir,
                         install_dir=self.install_dir,
                         my_appid=self.appid,
                         )
