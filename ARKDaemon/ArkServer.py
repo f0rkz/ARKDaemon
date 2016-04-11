@@ -11,10 +11,11 @@ from ARKDaemon.ServerRcon import ServerRcon
 
 
 class ArkServer(object):
-    def __init__(self, config):
+    def __init__(self, config, safe=False):
         self.config = config
         self.pid_file = os.path.join('ark.pid')
         self.platform = platform.system()
+        self.safe = safe
 
     def start(self):
         """
@@ -113,14 +114,14 @@ class ArkServer(object):
             my_pid_file.write('{}'.format(pid))
         print "Server launched! Please allow 5 to 10 minutes for server to start"
 
-    def stop(self, safe=False):
+    def stop(self):
         if not os.path.isfile(self.pid_file):
             sys.exit("Server is not running or PID file is missing! No need to stop (or you broke something).")
         else:
             # Check if the safe flag is set! If set, run the saveworld operation before screwing with the server.
             # Read the contents of the PID file and kill the process by PID.
-            if safe:
-                this = ServerRcon(self.config['ARK']['ip'], int(self.config['ARK']['rcon_port']),
+            if self.safe:
+                this = ServerRcon('127.0.0.1', int(self.config['ARK']['rcon_port']),
                                   self.config['ARK']['ServerAdminPassword'], 'saveworld')
                 this.run_command()
 

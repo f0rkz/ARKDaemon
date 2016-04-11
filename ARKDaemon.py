@@ -80,6 +80,11 @@ if DEBUG and server_config:
     print 'Map: {}'.format(server_config['ARK']['map'])
     print 'Mods: {}'.format(mod_list)
 
+if args.safe:
+    safe = True
+else:
+    safe = False
+
 if args.install_steamcmd:
     print "Checking and installing steamcmd."
     this = SteamCmd(appid=False)
@@ -125,7 +130,7 @@ elif args.start:
     this.start()
 
 elif args.stop:
-    this = ArkServer(config=server_config)
+    this = ArkServer(config=server_config, safe=safe)
     this.stop()
 
 elif args.save_world:
