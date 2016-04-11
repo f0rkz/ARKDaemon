@@ -170,11 +170,15 @@ elif args.status:
     this = ServerQuery(ip='127.0.0.1', port=int(server_config['ARK']['query_port']))
     result = this.status()
     if result['status']:
+        if result['os'] == 'w':
+            os = 'Windows'
+        elif result['os'] == 'l':
+            os = 'Linux'
         print("Status: " + Fore.GREEN + "Online" + Style.RESET_ALL)
         print "Server Name: {}".format(result['hostname'])
         print "Server Version: {}".format(result['version'])
         print "Server Map: {}".format(result['map'])
-        print "Server Environment: {}".format(result['os'])
+        print "Server Environment: {}".format(os)
         print "Players: {} / {}".format(result['players_cur'], result['players_max'])
     else:
         print("Status: " + Fore.RED + "Offline" + Style.RESET_ALL)
