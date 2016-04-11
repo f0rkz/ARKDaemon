@@ -51,7 +51,7 @@ class ArkServer(object):
 
         # Catch if battleye is enabled
         if self.config['ARK']['battleye']:
-            battleye_enable = "-battleye "
+            battleye_enable = "-UseBattlEye "
         else:
             battleye_enable = ""
 
