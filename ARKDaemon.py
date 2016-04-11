@@ -129,10 +129,10 @@ elif args.stop:
     this.stop()
 
 elif args.save_world:
-    this = ServerQuery(ip=server_config['ARK']['ip'], port=int(server_config['ARK']['query_port']))
+    this = ServerQuery(ip='127.0.0.1', port=int(server_config['ARK']['query_port']))
     result = this.status()
     if result['status']:
-        rcon = ServerRcon(ip=server_config['ARK']['ip'],
+        rcon = ServerRcon(ip='127.0.0.1',
                           port=int(server_config['ARK']['rcon_port']),
                           password=server_config['ARK']['serveradminpassword'],
                           ark_command='saveworld')
