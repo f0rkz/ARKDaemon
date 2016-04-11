@@ -49,6 +49,12 @@ class ArkServer(object):
         else:
             server_password = ''
 
+        # Catch if battleye is enabled
+        if self.config['ARK']['battleye']:
+            battleye_enable = "-battleye "
+        else:
+            battleye_enable = ""
+
         # Make a comma seperated list of the mods from config
         try:
             if self.config['ARK']['mods']:
@@ -69,23 +75,32 @@ class ArkServer(object):
         start_cmd = "{my_binary} " \
                     "{map}" \
                     "?GameModIds={mods}" \
+                    "?Multihome={ip}" \
                     "?MaxPlayers={players}" \
-                    "?Port=7777" \
-                    "?QueryPort=27015" \
+                    "?Port={listen_port}" \
+                    "?QueryPort={query_port}" \
                     "?RCONEnabled=True" \
-                    "?RCONPort=32330" \
+                    "?RCONPort={rcon_port}" \
                     "?ServerAdminPassword={adminpass}" \
                     "?ServerPassword{serverpass}" \
                     "?SessionName={sessionname}" \
-                    "?listen" \
+                    "?listen " \
+                    "{battleye}" \
+                    "-server "\
+                    "-log " \
                     "{mapid}" \
             .format(my_binary=binary,
                     map=self.config['ARK']['map'],
                     mods=my_mods,
+                    ip=self.config['ARK']['ip'],
                     players=self.config['ARK']['players'],
+                    listen_port=self.config['ARK']['gameserver_port'],
+                    query_port=self.config['ARK']['query_port'],
+                    rcon_port=self.config['ARK']['rcon_port'],
                     adminpass=self.config['ARK']['serveradminpassword'],
                     serverpass=server_password,
                     sessionname=self.config['ARK']['sessionname'],
+                    battleye=battleye_enable,
                     mapid=map_mod_id,
                     )
         # Start the server, you nut!
@@ -102,7 +117,8 @@ class ArkServer(object):
             # Check if the safe flag is set! If set, run the saveworld operation before screwing with the server.
             # Read the contents of the PID file and kill the process by PID.
             if safe:
-                this = ServerRcon('127.0.0.1', 32330, self.config['ARK']['ServerAdminPassword'], 'saveworld')
+                this = ServerRcon(self.config['ARK']['ip'], int(self.config['ARK']['rcon_port']),
+                                  self.config['ARK']['ServerAdminPassword'], 'saveworld')
                 this.run_command()
 
             # Move forward to stop the server by PID. PID file defined as self.pid_file

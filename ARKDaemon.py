@@ -111,7 +111,7 @@ elif args.install_ark:
 #     print "Configure!"
 
 elif args.update:
-    this = ServerQuery(ip='127.0.0.1', port=27015)
+    this = ServerQuery(ip=server_config['ARK']['ip'], port=int(server_config['ARK']['query_port']))
     result = this.status()
     if result['status']:
         sys.exit("Server is currently online! Stop the server first.")
@@ -129,10 +129,12 @@ elif args.stop:
     this.stop()
 
 elif args.save_world:
-    this = ServerQuery(ip='127.0.0.1', port=27015)
+    this = ServerQuery(ip=server_config['ARK']['ip'], port=int(server_config['ARK']['query_port']))
     result = this.status()
     if result['status']:
-        rcon = ServerRcon(ip='127.0.0.1', port=32330, password=server_config['ARK']['serveradminpassword'],
+        rcon = ServerRcon(ip=server_config['ARK']['ip'],
+                          port=int(server_config['ARK']['rcon_port']),
+                          password=server_config['ARK']['serveradminpassword'],
                           ark_command='saveworld')
     else:
         sys.exit("Server did not respond to a simple query. It may be offline!")
@@ -165,7 +167,7 @@ elif args.remote_status:
             print "Possible issue with returned data, the server does not exist, or the server is offline."
 
 elif args.status:
-    this = ServerQuery(ip='127.0.0.1', port=27015)
+    this = ServerQuery(ip=server_config['ARK']['ip'], port=int(server_config['ARK']['query_port']))
     result = this.status()
     if result['status']:
         print("Status: " + Fore.GREEN + "Online" + Style.RESET_ALL)

@@ -18,6 +18,9 @@ query_port = 27015
 # RCON Port
 rcon_port = 32330
 
+# Enable or disable BattlEye
+battleye = True
+
 # Maximum amount of players for the server
 players = 70
 
