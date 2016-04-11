@@ -167,7 +167,7 @@ elif args.remote_status:
             print "Possible issue with returned data, the server does not exist, or the server is offline."
 
 elif args.status:
-    this = ServerQuery(ip=server_config['ARK']['ip'], port=int(server_config['ARK']['query_port']))
+    this = ServerQuery(ip='127.0.0.1', port=int(server_config['ARK']['query_port']))
     result = this.status()
     if result['status']:
         print("Status: " + Fore.GREEN + "Online" + Style.RESET_ALL)
