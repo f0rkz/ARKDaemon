@@ -6,6 +6,18 @@ appid = 376030
 # This is the ARK: Survival Evolved client. Used for workshop items
 ark_appid = 346110
 
+# Server IP, listen to every interface by default
+ip = 0.0.0.0
+
+# Gameserver port
+gameserver_port = 7777
+
+# Query port
+query_port = 27015
+
+# RCON Port
+rcon_port = 32330
+
 # Maximum amount of players for the server
 players = 70
 
