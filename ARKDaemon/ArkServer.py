@@ -84,7 +84,6 @@ class ArkServer(object):
                     "?RCONPort={rcon_port}" \
                     "?ServerAdminPassword={adminpass}" \
                     "?ServerPassword{serverpass}" \
-                    "?SessionName={sessionname}" \
                     "?listen " \
                     "{battleye}" \
                     "-server "\
@@ -100,7 +99,6 @@ class ArkServer(object):
                     rcon_port=self.config['ARK']['rcon_port'],
                     adminpass=self.config['ARK']['serveradminpassword'],
                     serverpass=server_password,
-                    sessionname=self.config['ARK']['sessionname'],
                     battleye=battleye_enable,
                     mapid=map_mod_id,
                     )
