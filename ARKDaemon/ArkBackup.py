@@ -1,11 +1,11 @@
-# throw those imports here
-
-# -------------------------
+import os
+import sys
+import time
 
 
 class ArkBackup(object):
     def __init__(self):
-        pass
+        self.timestamp = time.strftime("%Y-%m-%d_%H.%M.%S")
 
     def do_backup(self):
         pass

@@ -121,7 +121,7 @@ class ArkServer(object):
             if self.safe:
                 this = ServerRcon('127.0.0.1', int(self.config['ARK']['rcon_port']),
                                   self.config['ARK']['ServerAdminPassword'], 'saveworld')
-                this.run_command()
+                print this.run_command()
 
             # Move forward to stop the server by PID. PID file defined as self.pid_file
             with open(self.pid_file, 'r') as pidfile:
@@ -133,3 +133,12 @@ class ArkServer(object):
             os.remove(self.pid_file)
             pid = ''
             print "All stop operations are complete."
+
+    def sys_status(self):
+        if not os.path.isfile(self.pid_file):
+            sys.exit("No PID file found. Are you sure ARK is running?")
+        else:
+            with open(self.pid_file, 'r') as pidfile:
+                pid = int(pidfile.read())
+            p = psutil.Process(pid=pid)
+            return p

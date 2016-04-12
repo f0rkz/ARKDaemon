@@ -196,6 +196,12 @@ elif args.status:
         print "Server Map: {}".format(result['map'])
         print "Server Environment: {}".format(os)
         print "Players: {} / {}".format(result['players_cur'], result['players_max'])
+        # Get the CPU times and memory load
+        system_status = ArkServer(config=server_config)
+        stats = system_status.sys_status()
+        print "CPU Usage: {}".format(stats.cpu_percent())
+        print "Memory Usage: {}".format(stats.memory_percent())
+        print "Thread Count: {}".format(stats.num_threads())
     else:
         print("Status: " + Fore.RED + "Offline" + Style.RESET_ALL)
         print "Possible issue with returned data, the server does not exist, or the server is offline."
