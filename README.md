@@ -107,6 +107,8 @@ added.
 ##Stopping the server
 `python ARKDaemon.py --stop`
 
+This process may take a moment to complete. I suggest running status to see if the server is still running.
+
 ##Saving the World File
 This will run the saveworld command on the server (needs to be running).
 
@@ -116,7 +118,23 @@ This will run the saveworld command on the server (needs to be running).
 * Currently under production.
 
 ##Local Status
+This will get some information about the server (if it is running).
+
 `python ARKDaemon.py --status`
+
+Example:
+
+    $ python ARKDaemon.py --status
+    Status: Online
+    Server Name: f0rkznet ARK PvE
+    Server Version: 238.6
+    Server Map: TheIsland
+    Server Environment: Linux
+    Players: 0 / 70
+    CPU Usage: 25.0%
+    Memory Usage: 56%
+    Thread Count: 17
+
 
 # Program Structure
 
