@@ -113,7 +113,7 @@ class SteamCmd(object):
             print "All operations completed. Mod ID: {} copied to: {}".format(self.mod_id, post_install_path)
 
         elif self.platform == "Linux":
-            steamcmd_run = '{steamcmd_path}\steamcmd.sh ' \
+            steamcmd_run = '{steamcmd_path}/steamcmd.sh ' \
                            '+@NoPromptForPassword 1 ' \
                            '+login anonymous ' \
                            '+workshop_download_item {my_appid} {my_modid} ' \
