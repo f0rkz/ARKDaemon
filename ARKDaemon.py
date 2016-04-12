@@ -196,6 +196,12 @@ elif args.status:
         print "Server Map: {}".format(result['map'])
         print "Server Environment: {}".format(os)
         print "Players: {} / {}".format(result['players_cur'], result['players_max'])
+        # Get a list of currently connected players
+        rcon = ServerRcon(ip='127.0.0.1',
+                   port=int(server_config['ARK']['rcon_port']),
+                   password=server_config['ARK']['serveradminpassword'],
+                   ark_command='ListPlayers')
+        print rcon.run_command()
         # Get the CPU times and memory load
         system_status = ArkServer(config=server_config)
         stats = system_status.sys_status()
