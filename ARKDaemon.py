@@ -141,6 +141,7 @@ elif args.save_world:
                           port=int(server_config['ARK']['rcon_port']),
                           password=server_config['ARK']['serveradminpassword'],
                           ark_command='saveworld')
+        rcon.run_command()
     else:
         sys.exit("Server did not respond to a simple query. It may be offline!")
 
