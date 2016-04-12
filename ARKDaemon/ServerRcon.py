@@ -10,7 +10,6 @@ class ServerRcon(object):
 
     def run_command(self):
         try:
-            print "Opening RCON connection with the server. Timeout set to 10 seconds. Please be patient..."
             server = rcon.SourceRcon(self.ip, self.port, self.password, timeout=10)
             result = server.rcon(self.ark_command)
             return result
