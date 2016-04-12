@@ -199,7 +199,7 @@ elif args.status:
         # Get the CPU times and memory load
         system_status = ArkServer(config=server_config)
         stats = system_status.sys_status()
-        print "CPU Usage: {}%".format(int(stats.cpu_percent()))
+        print "CPU Usage: {}%".format(stats.cpu_percent())
         print "Memory Usage: {}%".format(int(stats.memory_percent()))
         print "Thread Count: {}".format(stats.num_threads())
     else:
