@@ -150,7 +150,17 @@ elif args.install_mod:
     this.install_mod()
 
 elif args.update_mods:
-    print "Update mods!"
+    try:
+        if mod_list:
+            print "Running updates for mod id list: {}".format(mod_list)
+            for mod in mod_list:
+                print "Running update for mod {}".format(mod)
+                this = SteamCmd(appid=server_config['ARK']['ark_appid'], mod_id=mod)
+                this.install_mod()
+        else:
+            sys.exit("Looks like you don't have any mods configured. I gave up.")
+    except:
+        sys.exit("Looks like you don't have any mods configured. I gave up.")
 
 elif args.backup:
     print "Backup!"
