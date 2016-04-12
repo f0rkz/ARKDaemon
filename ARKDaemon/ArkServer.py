@@ -120,7 +120,7 @@ class ArkServer(object):
             # Read the contents of the PID file and kill the process by PID.
             if self.safe:
                 this = ServerRcon('127.0.0.1', int(self.config['ARK']['rcon_port']),
-                                  self.config['ARK']['ServerAdminPassword'], 'saveworld')
+                                  self.config['ARK']['serveradminpassword'], 'saveworld')
                 print this.run_command()
 
             # Move forward to stop the server by PID. PID file defined as self.pid_file
