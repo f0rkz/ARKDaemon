@@ -123,7 +123,7 @@ class SteamCmd(object):
                 for filename in fnmatch.filter(filenames, '*.z.uncompressed_size'):
                     #matches.append(os.path.join(root, filename))
                     this = ZUnpack(src_file=os.path.join(root, filename),
-                                   dst_file=os.path.join(root, filename.split('.z'[0])))
+                                   dst_file=os.path.join(root, filename.split('.z')[0]))
                     this.z_unpack()
                     # Remove the old file:
                     os.remove(os.path.join(root, filename))
@@ -168,7 +168,7 @@ class SteamCmd(object):
                 for filename in fnmatch.filter(filenames, '*.z'):
                     # matches.append(os.path.join(root, filename))
                     this = ZUnpack(src_file=os.path.join(root, filename),
-                                   dst_file=os.path.join(root, filename.split('.z'[0])))
+                                   dst_file=os.path.join(root, filename.split('.z')[0]))
                     this.z_unpack()
                     # Remove the old file:
                     os.remove(os.path.join(root, filename))
