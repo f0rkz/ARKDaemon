@@ -114,16 +114,18 @@ class SteamCmd(object):
             for root,dirnames,filenames in os.walk(workshop_install_path):
                 for filename in fnmatch.filter(filenames, '*.z'):
                     #matches.append(os.path.join(root, filename))
-                    this = ZUnpack(src_file=os.path.join(root, filename),
-                                   dst_file=os.path.join(root, filename.split('.z')[0]))
+                    this = ZUnpack(src_file=str(os.path.join(root, filename)),
+                                   dst_file=str(os.path.join(root, filename.split('.z')[0]))
+                                   )
                     this.z_unpack()
                     # Remove the old file:
                     os.remove(os.path.join(root, filename))
 
                 for filename in fnmatch.filter(filenames, '*.z.uncompressed_size'):
                     #matches.append(os.path.join(root, filename))
-                    this = ZUnpack(src_file=os.path.join(root, filename),
-                                   dst_file=os.path.join(root, filename.split('.z')[0]))
+                    this = ZUnpack(src_file=str(os.path.join(root, filename)),
+                                   dst_file=str(os.path.join(root, filename.split('.z')[0]))
+                                   )
                     this.z_unpack()
                     # Remove the old file:
                     os.remove(os.path.join(root, filename))
@@ -167,16 +169,18 @@ class SteamCmd(object):
             for root, dirnames, filenames in os.walk(workshop_install_path):
                 for filename in fnmatch.filter(filenames, '*.z'):
                     # matches.append(os.path.join(root, filename))
-                    this = ZUnpack(src_file=os.path.join(root, filename),
-                                   dst_file=os.path.join(root, filename.split('.z')[0]))
+                    this = ZUnpack(src_file=str(os.path.join(root, filename)),
+                                   dst_file=str(os.path.join(root, filename.split('.z')[0]))
+                                   )
                     this.z_unpack()
                     # Remove the old file:
                     os.remove(os.path.join(root, filename))
 
                 for filename in fnmatch.filter(filenames, '*.z.uncompressed_size'):
                     # matches.append(os.path.join(root, filename))
-                    this = ZUnpack(src_file=os.path.join(root, filename),
-                                   dst_file=os.path.join(root, filename.split('.z')[0]))
+                    this = ZUnpack(src_file=str(os.path.join(root, filename)),
+                                   dst_file=str(os.path.join(root, filename.split('.z')[0]))
+                                   )
                     this.z_unpack()
                     # Remove the old file:
                     os.remove(os.path.join(root, filename))
