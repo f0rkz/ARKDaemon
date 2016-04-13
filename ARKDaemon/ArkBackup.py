@@ -65,7 +65,7 @@ class ArkBackup(object):
         # Make a tar file of the backup content
         tar = tarfile.open(os.path.join(self.backup_directory, 'ARK_BACKUP-{}.tar.gz'.format(self.timestamp)), 'w:gz')
         for file in files:
-            tar.add(file)
+            tar.add(os.path.join(self.ark_saved_dir, file))
         tar.close()
 
 
