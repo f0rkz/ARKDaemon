@@ -151,7 +151,7 @@ class SteamCmd(object):
                                                  'content',
                                                  self.appid,
                                                  self.mod_id,
-                                                 'LinuxNoEditor'
+                                                 'WindowsNoEditor'
                                                  )
             post_install_path = os.path.join(self.install_dir,
                                              'ShooterGame',
