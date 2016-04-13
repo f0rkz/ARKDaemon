@@ -121,14 +121,14 @@ class SteamCmd(object):
                     # Remove the old file:
                     os.remove(os.path.join(root, filename))
 
-                for filename in fnmatch.filter(filenames, '*.z.uncompressed_size'):
-                    #matches.append(os.path.join(root, filename))
-                    this = ZUnpack(src_file=str(os.path.join(root, filename)),
-                                   dst_file=str(os.path.join(root, filename.split('.z')[0]))
-                                   )
-                    this.z_unpack()
-                    # Remove the old file:
-                    os.remove(os.path.join(root, filename))
+                #for filename in fnmatch.filter(filenames, '*.z.uncompressed_size'):
+                #    #matches.append(os.path.join(root, filename))
+                #    this = ZUnpack(src_file=str(os.path.join(root, filename)),
+                #                   dst_file=str(os.path.join(root, filename.split('.z')[0]))
+                #                   )
+                #    this.z_unpack()
+                #    # Remove the old file:
+                #    os.remove(os.path.join(root, filename))
 
             # Copy the contents of the mod to the proper location
             print "Copying mod contents to ARK"
@@ -176,14 +176,14 @@ class SteamCmd(object):
                     # Remove the old file:
                     os.remove(os.path.join(root, filename))
 
-                for filename in fnmatch.filter(filenames, '*.z.uncompressed_size'):
-                    # matches.append(os.path.join(root, filename))
-                    this = ZUnpack(src_file=str(os.path.join(root, filename)),
-                                   dst_file=str(os.path.join(root, filename.split('.z')[0]))
-                                   )
-                    this.z_unpack()
-                    # Remove the old file:
-                    os.remove(os.path.join(root, filename))
+                #for filename in fnmatch.filter(filenames, '*.z.uncompressed_size'):
+                #    # matches.append(os.path.join(root, filename))
+                #    this = ZUnpack(src_file=str(os.path.join(root, filename)),
+                #                   dst_file=str(os.path.join(root, filename.split('.z')[0]))
+                #                   )
+                #    this.z_unpack()
+                #    # Remove the old file:
+                #    os.remove(os.path.join(root, filename))
 
             # Copy the contents of the mod to the proper location
             print "Copying mod contents to ARK"
