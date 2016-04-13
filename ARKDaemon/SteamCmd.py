@@ -7,6 +7,7 @@ import tarfile
 import urllib
 import zipfile
 from shutil import copytree, rmtree
+import ARKDaemon.ZUnpack
 
 
 class SteamCmd(object):
