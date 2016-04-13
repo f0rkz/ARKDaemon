@@ -12,6 +12,7 @@ class ArkBackup(object):
         self.timestamp = time.strftime("%Y-%m-%d_%H.%M.%S")
         self.server_config = server_config
         self.backup_directory = os.path.join('ARK_BACKUPS')
+        self.ark_saved_dir = os.path.join('ARK', 'ShooterGame', 'Saved', 'SavedArks')
 
     def do_backup(self):
         # Do a saveworld operation
@@ -26,7 +27,7 @@ class ArkBackup(object):
 
         # Get a list of files to backup
         files = []
-        for root, dirnames, filenames in os.walk('.'):
+        for root, dirnames, filenames in os.walk(self.ark_saved_dir):
             for filename in fnmatch.filter(filenames, '*.arkprofile'):
                 files.append(filename)
             for filename in fnmatch.filter(filenames, '*.arktribe'):
