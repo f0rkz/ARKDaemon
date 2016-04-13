@@ -63,10 +63,11 @@ class ArkBackup(object):
         print files
 
         # Make a tar file of the backup content
-        #tar = tarfile.open(os.path.join(self.backup_directory,
-        #                                'ARK_BACKUP-{}.tar.gz'.format(self.timestamp)
-        #                                )
-        #                   )
+        tar = tarfile.open(os.path.join(self.backup_directory, 'ARK_BACKUP-{}.tar.gz'.format(self.timestamp)))
+        for file in files:
+            tar.add(file)
+        tar.close()
+
 
     def restore_backup(self):
         pass
