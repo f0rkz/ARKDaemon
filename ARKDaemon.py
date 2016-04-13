@@ -13,6 +13,7 @@ from ARKDaemon.SteamCmd import SteamCmd
 from ARKDaemon.ServerQuery import ServerQuery
 from ARKDaemon.ServerRcon import ServerRcon
 from ARKDaemon.ArkServer import ArkServer
+from ARKDaemon.ArkBackup import ArkBackup
 
 # Required for colorama
 init()
@@ -45,7 +46,7 @@ argparser.add_argument("--install_mod", nargs='?', metavar='mod_id',
                        help="Installs a mod. Example: ARKDaemon.py install_mod 655581765")
 argparser.add_argument("--update_mods", help="Runs an update/install of all mods listed in sever.conf",
                        action="store_true")
-argparser.add_argument("-b", "--backup", help="Backs up ARK world data.")
+argparser.add_argument("-b", "--backup", help="Backs up ARK world data.", action="store_true")
 argparser.add_argument("--debug", help="Debug flag for more output.", action="store_true")
 args = argparser.parse_args()
 
@@ -163,7 +164,8 @@ elif args.update_mods:
         sys.exit("Looks like you don't have any mods configured. I gave up.")
 
 elif args.backup:
-    print "Backup!"
+    this = ArkBackup(server_config=server_config)
+    this.do_backup()
 
 elif args.remote_status:
     if len(args.remote_status) > 2 or len(args.remote_status) < 2:
