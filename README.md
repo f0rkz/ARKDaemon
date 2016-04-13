@@ -8,10 +8,10 @@ This tool is currently in development. Please submit issues if any come up!
 
 # News
 
-4/10/2016: [Commit c72f655](https://github.com/f0rkz/ARKDaemon/tree/c72f655cfa2b8427907e046f66a9783dc3438caa) Version 0.01 ready for production.
+* 4/10/2016: [Commit c72f655](https://github.com/f0rkz/ARKDaemon/tree/c72f655cfa2b8427907e046f66a9783dc3438caa) Version 0.01 ready for production.
+* 4/13/2016: [Commit 930c127](https://github.com/f0rkz/ARKDaemon/commit/930c1279af457ff9e61fc550d2e3e688ae2024f0) Version 0.05 Backup support added. Mods are working now!
 
 ##Currently known issues and untested features:
-* Backup is still not ready for production. Will work on that branch soon!
 * Complete map changes from TheIsland may cause your server not to operate. Still need a lot more testing
 * Mod install should work but it is currently untested.
 
