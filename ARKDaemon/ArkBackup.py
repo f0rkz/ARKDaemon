@@ -3,6 +3,7 @@ import sys
 import time
 import tarfile
 import fnmatch
+import platform
 from ARKDaemon.ServerQuery import ServerQuery
 from ARKDaemon.ServerRcon import ServerRcon
 
@@ -11,8 +12,11 @@ class ArkBackup(object):
     def __init__(self, server_config):
         self.timestamp = time.strftime("%Y-%m-%d_%H.%M.%S")
         self.server_config = server_config
+        self.platform = platform.system()
         self.backup_directory = os.path.join('ARK_BACKUPS')
         self.ark_saved_dir = os.path.join('ARK', 'ShooterGame', 'Saved')
+        self.ark_config_dir_windows = os.path.join('ARK', 'ShooterGame', 'Saved', 'Config', 'WindowsServer')
+        self.ark_config_dir_linux = os.path.join('ARK', 'ShooterGame', 'Saved', 'Config', 'LinuxServer')
 
     def do_backup(self):
         # Do a saveworld operation
@@ -30,19 +34,31 @@ class ArkBackup(object):
         for root, dirnames, filenames in os.walk(self.ark_saved_dir):
             # Backup arkprofiles
             for filename in fnmatch.filter(filenames, '*.arkprofile'):
-                files.append(filename)
+                files.append(os.path.join('SavedArks', filename))
             # Backup tribes
             for filename in fnmatch.filter(filenames, '*.arktribe'):
-                files.append(filename)
+                files.append(os.path.join('SavedArks', filename))
             # Backup the map file
             for filename in fnmatch.filter(filenames, '{}.ark'.format(self.server_config['ARK']['map'])):
-                files.append(filename)
-            # Backup GameUserSettings.ini
-            for filename in fnmatch.filter(filenames, 'GameUserSettings.ini'):
-                files.append(filename)
-            # Backup Game.ini
-            for filename in fnmatch.filter(filenames, 'Game.ini'):
-                files.append(filename)
+                files.append(os.path.join('SavedArks', filename))
+
+        if self.platform == 'Windows':
+            for root,dirnames,filenames in os.walk(self.ark_config_dir_windows):
+                # Backup GameUserSettings.ini
+                for filename in fnmatch.filter(filenames, 'GameUserSettings.ini'):
+                    files.append(os.path.join('Config', 'WindowsServer', filename))
+                # Backup Game.ini
+                for filename in fnmatch.filter(filenames, 'Game.ini'):
+                    files.append(os.path.join('Config', 'WindowsServer', filename))
+
+        elif self.platform == 'Linux':
+            for root, dirnames, filenames in os.walk(self.ark_config_dir_linux):
+                # Backup GameUserSettings.ini
+                for filename in fnmatch.filter(filenames, 'GameUserSettings.ini'):
+                    files.append(os.path.join('Config', 'LinuxServer', filename))
+                # Backup Game.ini
+                for filename in fnmatch.filter(filenames, 'Game.ini'):
+                    files.append(os.path.join('Config', 'LinuxServer', filename))
 
         print files
 
