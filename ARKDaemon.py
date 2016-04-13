@@ -46,7 +46,7 @@ argparser.add_argument("--install_mod", nargs='?', metavar='mod_id',
                        help="Installs a mod. Example: ARKDaemon.py install_mod 655581765")
 argparser.add_argument("--update_mods", help="Runs an update/install of all mods listed in sever.conf",
                        action="store_true")
-argparser.add_argument("-b", "--backup", help="Backs up ARK world data.")
+argparser.add_argument("-b", "--backup", help="Backs up ARK world data.", action="store_true")
 argparser.add_argument("--debug", help="Debug flag for more output.", action="store_true")
 args = argparser.parse_args()
 
