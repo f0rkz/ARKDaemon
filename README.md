@@ -115,7 +115,13 @@ This will run the saveworld command on the server (needs to be running).
 `python ARKDaemon.py --save_world`
 
 ##Server Backup
-* Currently under production.
+This will copy your current `Mapname.ark` and all the tribe and player profiles to a .tar.gz file that will be accessible in the ARK_BACKUPS directory.
+
+`python ARKDaemon.py --backup`
+
+ or
+
+ `python ARKDaemon.py -b`
 
 ##Local Status
 This will get some information about the server (if it is running).
