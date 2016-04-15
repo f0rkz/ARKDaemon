@@ -28,7 +28,7 @@ class ServerQuery(object):
                 p = psutil.Process(pid=pid)
                 sys_data = {
                     'cpu': p.cpu_percent(interval=1),
-                    'mem': int(p.stats.memory_percent()),
+                    'mem': int(p.memory_percent()),
                     'threads': p.num_threads(),
                 }
 
