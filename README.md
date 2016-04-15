@@ -141,6 +141,19 @@ Example:
     Memory Usage: 56%
     Thread Count: 17
 
+# Web Admin Interface and API
+This feature is currently in development and not ready for production.
+
+##Running the web interface
+`python ARKDaemon.py --web`
+
+or
+
+`python web.py`
+
+## API Documentation
+### Server status
+http://your.ip.here/arkdaemon/api/v1.0/status
 
 # Program Structure
 
