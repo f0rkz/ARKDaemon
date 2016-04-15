@@ -1,6 +1,7 @@
 import os
 from flask import Flask, jsonify
 import ConfigParser
+import ast
 
 from ARKDaemon.ServerQuery import ServerQuery
 from ARKDaemon.ArkServerApi import ArkServerApi
@@ -42,6 +43,11 @@ def start():
 def stop():
     this = ArkServerApi(config=server_config, safe=True)
     return jsonify(this.stop())
+
+@app.route("{}/operation/save".format(api_base_uri), methods=['GET'])
+def save():
+    this = ArkServerApi(config=server_config, safe=True)
+    return jsonify(this.save())
 
 if __name__ == "__main__":
     app.debug = True

@@ -8,6 +8,7 @@ import sys
 import psutil
 
 from ARKDaemon.ServerRcon import ServerRcon
+from ARKDaemon.ServerQuery import ServerQuery
 
 
 class ArkServer(object):
@@ -134,11 +135,22 @@ class ArkServer(object):
             pid = ''
             print "All stop operations are complete."
 
-    def sys_status(self):
-        if not os.path.isfile(self.pid_file):
-            sys.exit("No PID file found. Are you sure ARK is running?")
+    def save(self):
+        result = {}
+        this = ServerQuery(ip='127.0.0.1', port=int(self.config['ARK']['query_port']))
+        query = this.status()
+        if query['status']:
+            rcon = ServerRcon(ip='127.0.0.1',
+                              port=int(self.config['ARK']['rcon_port']),
+                              password=self.config['ARK']['serveradminpassword'],
+                              ark_command='saveworld')
+
+            result['error'] = False
+            result['message'] = rcon.run_command()
+
+            return result
         else:
-            with open(self.pid_file, 'r') as pidfile:
-                pid = int(pidfile.read())
-            p = psutil.Process(pid=pid)
-            return p
+            result['error'] = True
+            result['message'] = sys.exit("Server did not respond to a simple query. It may be offline!")
+
+            return result

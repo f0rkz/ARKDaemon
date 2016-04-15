@@ -26,6 +26,8 @@ class ArkServerApi(object):
                 psutil.Process(pid)
                 result['error'] = True
                 result['message'] = 'Error: Server is currently running'
+
+                return result
             except:
                 result['error'] = False
                 os.remove(self.pid_file)
