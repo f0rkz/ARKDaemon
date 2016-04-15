@@ -44,4 +44,5 @@ def stop():
     return jsonify(this.stop())
 
 if __name__ == "__main__":
+    app.debug = True
     app.run()
