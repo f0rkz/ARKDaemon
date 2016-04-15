@@ -41,7 +41,7 @@ class ServerQuery(object):
                 'os': info['os'],
                 'players_cur': info['numplayers'],
                 'players_max': info['maxplayers'],
-                'system_info': {sys_data}
+                'system_info': sys_data,
             }
         except (gaierror, error):
             data = {
