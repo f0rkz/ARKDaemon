@@ -118,7 +118,7 @@ elif args.install_ark:
 
 elif args.update:
     this = ServerQuery(ip=server_config['ARK']['ip'], port=int(server_config['ARK']['query_port']))
-    result = this.status
+    result = this.status()
     if result['status']:
         sys.exit("Server is currently online! Stop the server first.")
     else:
@@ -136,7 +136,7 @@ elif args.stop:
 
 elif args.save_world:
     this = ServerQuery(ip='127.0.0.1', port=int(server_config['ARK']['query_port']))
-    result = this.status
+    result = this.status()
     if result['status']:
         rcon = ServerRcon(ip='127.0.0.1',
                           port=int(server_config['ARK']['rcon_port']),
@@ -186,7 +186,7 @@ elif args.remote_status:
 
 elif args.status:
     this = ServerQuery(ip='127.0.0.1', port=int(server_config['ARK']['query_port']))
-    result = this.status
+    result = this.status()
     if result['status']:
         if result['os'] == 'w':
             os = 'Windows'
