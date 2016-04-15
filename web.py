@@ -24,7 +24,7 @@ def root():
     return "Welcome to ARKDaemon"
 
 # JSON Status endpoint
-@app.route("/status")
+@app.route("/status/")
 def status():
     this = ServerQuery(ip='127.0.0.1', port=int(server_config['ARK']['query_port']))
     return jsonify(this.status())
