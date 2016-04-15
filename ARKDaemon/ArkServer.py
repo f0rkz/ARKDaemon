@@ -120,6 +120,7 @@ class ArkServer(object):
             my_pid_file.write('{}'.format(pid))
         if self.api:
             info['status'] = True
+            return info
         else:
             print "Server launched! Please allow 5 to 10 minutes for server to start"
 
@@ -153,6 +154,7 @@ class ArkServer(object):
             pid = ''
             if self.api:
                 info['status'] = True
+                return info
             else:
                 print "All stop operations are complete."
 
