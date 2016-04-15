@@ -13,8 +13,8 @@ class ServerQuery(object):
         self.api = 'https://api.ark.bar/server/'
         self.ip = ip
         self.port = port
+        self.pid_file = os.path.join('ark.pid')
 
-    @property
     def status(self):
         try:
             server = SourceQuery(self.ip, self.port)
