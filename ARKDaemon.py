@@ -6,6 +6,7 @@ import ast
 import os
 import sys
 import time
+import subprocess
 
 from colorama import init, Fore, Style
 # Classes from project
@@ -48,6 +49,7 @@ argparser.add_argument("--update_mods", help="Runs an update/install of all mods
                        action="store_true")
 argparser.add_argument("-b", "--backup", help="Backs up ARK world data.", action="store_true")
 argparser.add_argument("--debug", help="Debug flag for more output.", action="store_true")
+argparser.add_argument("--web", help="Run the web tool", action="store_true")
 args = argparser.parse_args()
 
 parser = ConfigParser.RawConfigParser()
@@ -112,9 +114,6 @@ elif args.install_ark:
     else:
         sys.exit('Something is wrong with your configuration. I expected appid 376030 or 445400, but received {}') \
             .format(server_config['ARK']['appid'])
-
-# elif args.configure:
-#     print "Configure!"
 
 elif args.update:
     this = ServerQuery(ip=server_config['ARK']['ip'], port=int(server_config['ARK']['query_port']))
@@ -210,15 +209,13 @@ elif args.status:
                    password=server_config['ARK']['serveradminpassword'],
                    ark_command='ListPlayers')
         print rcon.run_command()
-        # Get the CPU times and memory load
-        #system_status = ArkServer(config=server_config)
-        #stats = system_status.sys_status()
-        #print "CPU Usage: {}%".format(stats.cpu_percent(interval=1))
-        #print "Memory Usage: {}%".format(int(stats.memory_percent()))
-        #print "Thread Count: {}".format(stats.num_threads())
     else:
         print("Status: " + Fore.RED + "Offline" + Style.RESET_ALL)
         print "Possible issue with returned data, the server does not exist, or the server is offline."
+
+elif args.web:
+    print "Starting web interface! Hit ^C to quit."
+    subprocess.call("python web.py", shell=True)
 
 else:
     sys.exit("No options given. Use --help for more information.")
