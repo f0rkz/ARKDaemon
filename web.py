@@ -3,7 +3,7 @@ from flask import Flask, jsonify
 import ConfigParser
 
 from ARKDaemon.ServerQuery import ServerQuery
-from ARKDaemon.ArkServer import ArkServer
+from ARKDaemon.ArkServerApi import ArkServerApi
 
 # Load the server configuration
 parser = ConfigParser.RawConfigParser()
@@ -32,16 +32,16 @@ def status():
     this = ServerQuery(ip='127.0.0.1', port=int(server_config['ARK']['query_port']))
     return jsonify(this.status())
 
-# Server operation. Needs an API key for production but I just want to see if it will work
+# Server operations. Needs an API key for production but I just want to see if it will work
 @app.route("{}/operation/start".format(api_base_uri), methods=['GET'])
 def start():
-    return "Foo"
-
-
+    this = ArkServerApi(config=server_config, safe=True)
+    return this.start()
 
 @app.route("{}/operation/stop".format(api_base_uri), methods=['GET'])
 def stop():
-    return "Foo"
+    this = ArkServerApi(config=server_config, safe=True)
+    return this.stop()
 
 if __name__ == "__main__":
     app.debug = True

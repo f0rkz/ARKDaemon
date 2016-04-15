@@ -11,12 +11,11 @@ from ARKDaemon.ServerRcon import ServerRcon
 
 
 class ArkServer(object):
-    def __init__(self, config, safe=False, api=False):
+    def __init__(self, config, safe=False):
         self.config = config
         self.pid_file = os.path.join('ark.pid')
         self.platform = platform.system()
         self.safe = safe
-        self.api = api
 
     def start(self):
         """
@@ -26,7 +25,6 @@ class ArkServer(object):
             Maybe I need to add a check in the status module to delete the PID file if the server
             is not running... Will have to test and find out.
         """
-        info = {}
         if os.path.isfile(self.pid_file):
             # Get a list of active PID's and see if the PID in the file exists. If not, delete the PID file.
             with open(self.pid_file, 'r') as pidfile:
