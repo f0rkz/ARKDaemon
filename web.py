@@ -27,7 +27,7 @@ def root():
 @app.route("/status/")
 def status():
     this = ServerQuery(ip='127.0.0.1', port=int(server_config['ARK']['query_port']))
-    return jsonify(this.status())
+    return jsonify(this.status)
 
 if __name__ == "__main__":
     app.run()

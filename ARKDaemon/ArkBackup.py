@@ -21,7 +21,7 @@ class ArkBackup(object):
     def do_backup(self):
         # Do a saveworld operation
         this = ServerQuery(ip='127.0.0.1', port=int(self.server_config['ARK']['query_port']))
-        result = this.status()
+        result = this.status
         if result['status']:
             rcon = ServerRcon(ip='127.0.0.1',
                               port=int(self.server_config['ARK']['rcon_port']),
