@@ -36,12 +36,12 @@ def status():
 @app.route("{}/operation/start".format(api_base_uri), methods=['GET'])
 def start():
     this = ArkServerApi(config=server_config, safe=True)
-    return this.start()
+    return jsonify(this.start())
 
 @app.route("{}/operation/stop".format(api_base_uri), methods=['GET'])
 def stop():
     this = ArkServerApi(config=server_config, safe=True)
-    return this.stop()
+    return jsonify(this.stop())
 
 if __name__ == "__main__":
     app.debug = True
