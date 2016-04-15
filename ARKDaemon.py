@@ -188,16 +188,22 @@ elif args.status:
     this = ServerQuery(ip='127.0.0.1', port=int(server_config['ARK']['query_port']))
     result = this.status()
     if result['status']:
-        if result['os'] == 'w':
-            os = 'Windows'
-        elif result['os'] == 'l':
-            os = 'Linux'
+        #if result['os'] == 'w':
+        #    os = 'Windows'
+        #elif result['os'] == 'l':
+        #    os = 'Linux'
         print("Status: " + Fore.GREEN + "Online" + Style.RESET_ALL)
         print "Server Name: {}".format(result['hostname'])
         print "Server Version: {}".format(result['version'])
         print "Server Map: {}".format(result['map'])
-        print "Server Environment: {}".format(os)
+        print "Server Environment: {}".format(result['os'])
         print "Players: {} / {}".format(result['players_cur'], result['players_max'])
+        if result['system_info']:
+            print "CPU Usage: {}%".format(result['system_info']['cpu'])
+            print "Memory Usage: {}%".format(result['system_info']['memory'])
+            print "Thread Count: {}".format(result['system_info']['threads'])
+        else:
+            print "Can't find a valid PID file to read statistics."
         # Get a list of currently connected players
         rcon = ServerRcon(ip='127.0.0.1',
                    port=int(server_config['ARK']['rcon_port']),
@@ -205,11 +211,11 @@ elif args.status:
                    ark_command='ListPlayers')
         print rcon.run_command()
         # Get the CPU times and memory load
-        system_status = ArkServer(config=server_config)
-        stats = system_status.sys_status()
-        print "CPU Usage: {}%".format(stats.cpu_percent(interval=1))
-        print "Memory Usage: {}%".format(int(stats.memory_percent()))
-        print "Thread Count: {}".format(stats.num_threads())
+        #system_status = ArkServer(config=server_config)
+        #stats = system_status.sys_status()
+        #print "CPU Usage: {}%".format(stats.cpu_percent(interval=1))
+        #print "Memory Usage: {}%".format(int(stats.memory_percent()))
+        #print "Thread Count: {}".format(stats.num_threads())
     else:
         print("Status: " + Fore.RED + "Offline" + Style.RESET_ALL)
         print "Possible issue with returned data, the server does not exist, or the server is offline."

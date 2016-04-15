@@ -20,6 +20,12 @@ class ServerQuery(object):
             server = SourceQuery(self.ip, self.port)
             info = server.info()
 
+            # Convert the OS to its full name
+            if info['os'] == "w":
+                my_os = "Windows"
+            elif info['os'] == "l":
+                my_os = "Linux"
+
             if not os.path.isfile(self.pid_file):
                 sys_data = False
             else:
@@ -38,11 +44,15 @@ class ServerQuery(object):
                 'hostname': info['hostname'].split(" - ")[0],
                 'version': re.sub('[v()]', '', info['hostname'].split(" - ")[1]),
                 'map': info['map'],
-                'os': info['os'],
+                'os': my_os,
                 'players_cur': info['numplayers'],
                 'players_max': info['maxplayers'],
-                'system_info': sys_data,
             }
+            if sys_data:
+                data['system_info'] = sys_data
+            else:
+                data['system_info'] = False
+                
         except (gaierror, error):
             data = {
                 'status': False,
