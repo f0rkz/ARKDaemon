@@ -30,6 +30,8 @@ class ArkServerApi(object):
                 result['error'] = False
                 os.remove(self.pid_file)
                 pid = ''
+        else:
+            result['error'] = False
 
         # Check the server platform and error if an unsupported platform is running.
         if self.platform == "Windows":
