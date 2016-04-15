@@ -200,7 +200,7 @@ elif args.status:
         print "Players: {} / {}".format(result['players_cur'], result['players_max'])
         if result['system_info']:
             print "CPU Usage: {}%".format(result['system_info']['cpu'])
-            print "Memory Usage: {}%".format(result['system_info']['memory'])
+            print "Memory Usage: {}%".format(result['system_info']['mem'])
             print "Thread Count: {}".format(result['system_info']['threads'])
         else:
             print "Can't find a valid PID file to read statistics."

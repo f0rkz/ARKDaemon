@@ -52,7 +52,7 @@ class ServerQuery(object):
                 data['system_info'] = sys_data
             else:
                 data['system_info'] = False
-                
+
         except (gaierror, error):
             data = {
                 'status': False,
