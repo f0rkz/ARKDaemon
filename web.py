@@ -35,13 +35,13 @@ def status():
 # Server operation. Needs an API key for production but I just want to see if it will work
 @app.route("{}/operation/start".format(api_base_uri), methods=['GET'])
 def start():
-    this = ArkServer(config=server_config, api=True)
-    return jsonify(this.start())
+    return "Foo"
+
+
 
 @app.route("{}/operation/stop".format(api_base_uri), methods=['GET'])
 def stop():
-    this = ArkServer(config=server_config, api=True)
-    return jsonify(this.stop())
+    return "Foo"
 
 if __name__ == "__main__":
     app.debug = True

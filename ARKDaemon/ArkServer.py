@@ -33,10 +33,7 @@ class ArkServer(object):
                 pid = int(pidfile.read())
             try:
                 psutil.Process(pid)
-                if self.api:
-                    info['error'] = 'ARK is already running.'
-                else:
-                    sys.exit('ARK is running. Shut the server down with --stop before starting it.')
+                sys.exit('ARK is running. Shut the server down with --stop before starting it.')
             except psutil.NoSuchProcess:
                 os.remove(self.pid_file)
                 pid = ''
@@ -47,10 +44,7 @@ class ArkServer(object):
         elif self.platform == "Linux":
             binary = os.path.join('ARK', 'ShooterGame', 'Binaries', 'Linux', 'ShooterGameServer')
         else:
-            if self.api:
-                info['error'] = 'You are running on an unsupported platform: {}'.format(self.platform)
-            else:
-                sys.exit("You are running on an unsupported platform: {}".format(self.platform))
+            sys.exit("You are running on an unsupported platform: {}".format(self.platform))
 
         # Format the password command so we can spit it out properly
         if self.config['ARK']['serverpassword'] is not '':
@@ -118,45 +112,29 @@ class ArkServer(object):
         pid = server_process.pid
         with open(self.pid_file, 'w') as my_pid_file:
             my_pid_file.write('{}'.format(pid))
-        if self.api:
-            info['status'] = True
-            return info
-        else:
-            print "Server launched! Please allow 5 to 10 minutes for server to start"
+        print "Server launched! Please allow 5 to 10 minutes for server to start"
 
     def stop(self):
-        info = {}
         if not os.path.isfile(self.pid_file):
-            if self.api:
-                info['error'] = 'Server is not running or PID file is missing! No need to stop (or you broke something).'
-            else:
-                sys.exit("Server is not running or PID file is missing! No need to stop (or you broke something).")
+            sys.exit("Server is not running or PID file is missing! No need to stop (or you broke something).")
         else:
             # Check if the safe flag is set! If set, run the saveworld operation before screwing with the server.
             # Read the contents of the PID file and kill the process by PID.
             if self.safe:
                 this = ServerRcon('127.0.0.1', int(self.config['ARK']['rcon_port']),
                                   self.config['ARK']['serveradminpassword'], 'saveworld')
-                if self.api:
-                    info['safe'] = this.run_command()
-                else:
-                    print this.run_command()
+                print this.run_command()
 
             # Move forward to stop the server by PID. PID file defined as self.pid_file
             with open(self.pid_file, 'r') as pidfile:
                 pid = int(pidfile.read())
 
-            if not self.api:
-                print "Killing process with PID: {}".format(pid)
+            print "Killing process with PID: {}".format(pid)
             p = psutil.Process(pid)
             p.send_signal(signal.SIGTERM)
             os.remove(self.pid_file)
             pid = ''
-            if self.api:
-                info['status'] = True
-                return info
-            else:
-                print "All stop operations are complete."
+            print "All stop operations are complete."
 
     def sys_status(self):
         if not os.path.isfile(self.pid_file):
