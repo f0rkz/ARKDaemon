@@ -21,12 +21,12 @@ class ArkBackup(object):
     def do_backup(self):
         # Do a saveworld operation
         result = {}
-        this = ServerQuery(ip='127.0.0.1', port=int(self.server_config['ARK']['query_port']))
+        this = ServerQuery(ip='127.0.0.1', port=int(self.config['ARK']['query_port']))
         query = this.status()
         if query['status']:
             rcon = ServerRcon(ip='127.0.0.1',
-                              port=int(self.server_config['ARK']['rcon_port']),
-                              password=self.server_config['ARK']['serveradminpassword'],
+                              port=int(self.config['ARK']['rcon_port']),
+                              password=self.config['ARK']['serveradminpassword'],
                               ark_command='saveworld')
             print rcon.run_command()
 
@@ -40,7 +40,7 @@ class ArkBackup(object):
             for filename in fnmatch.filter(filenames, '*.arktribe'):
                 files.append(os.path.join('SavedArks', filename))
             # Backup the map file
-            for filename in fnmatch.filter(filenames, '{}.ark'.format(self.server_config['ARK']['map'])):
+            for filename in fnmatch.filter(filenames, '{}.ark'.format(self.config['ARK']['map'])):
                 files.append(os.path.join('SavedArks', filename))
 
         if self.platform == 'Windows':
