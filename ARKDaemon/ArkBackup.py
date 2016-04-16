@@ -62,13 +62,15 @@ class ArkBackup(object):
                     files.append(os.path.join('Config', 'LinuxServer', filename))
 
         # Make a tar file of the backup content
-        tar = tarfile.open(os.path.join(self.backup_directory, 'ARK_BACKUP-{}.tar.gz'.format(self.timestamp)), 'w:gz')
+        backup_name = 'ARK_BACKUP-{}.tar.gz'.format(self.timestamp)
+        tar = tarfile.open(os.path.join(self.backup_directory, backup_name), 'w:gz')
         for file in files:
             tar.add(os.path.join(self.ark_saved_dir, file))
         tar.close()
 
         result['status'] = True
-        result['backup'] = file
+        result['backup_files'] = files
+        result['backup'] = backup_name
 
         return result
 
