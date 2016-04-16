@@ -51,7 +51,7 @@ def save():
     this = ArkServerApi(config=server_config, safe=True)
     return jsonify(this.save())
 
-@app.route("{}/operations/backup".format(api_base_uri), safe=True)
+@app.route("{}/operations/backup".format(api_base_uri))
 def backup():
     this = ArkBackup(config=server_config)
     return jsonify(this.do_backup())
