@@ -28,7 +28,7 @@ def root():
     return "Welcome to ARKDaemon"
 
 # API
-api_base_uri = '/arkdaemon/api/v1.0'
+api_base_uri = '/api'
 
 @app.route("{}/status/".format(api_base_uri), methods=['GET'])
 def status():
