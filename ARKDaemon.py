@@ -4,9 +4,9 @@ import ConfigParser
 import argparse
 import ast
 import os
+import subprocess
 import sys
 import time
-import subprocess
 
 from colorama import init, Fore, Style
 # Classes from project
@@ -163,7 +163,7 @@ elif args.update_mods:
         sys.exit("Looks like you don't have any mods configured. I gave up.")
 
 elif args.backup:
-    this = ArkBackup(server_config=server_config)
+    this = ArkBackup(config=server_config)
     this.do_backup()
 
 elif args.remote_status:

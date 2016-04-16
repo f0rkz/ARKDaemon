@@ -1,10 +1,12 @@
-import os
-from flask import Flask, jsonify
 import ConfigParser
 import ast
+import os
 
-from ARKDaemon.ServerQuery import ServerQuery
+from flask import Flask, jsonify
+
+from ARKDaemon.ArkBackup import ArkBackup
 from ARKDaemon.ArkServerApi import ArkServerApi
+from ARKDaemon.ServerQuery import ServerQuery
 
 # Load the server configuration
 parser = ConfigParser.RawConfigParser()
@@ -48,6 +50,11 @@ def stop():
 def save():
     this = ArkServerApi(config=server_config, safe=True)
     return jsonify(this.save())
+
+@app.route("{}/operations/backup".format(api_base_uri), safe=True)
+def backup():
+    this = ArkBackup(config=server_config)
+    return jsonify(this.do_backup())
 
 if __name__ == "__main__":
     app.debug = True

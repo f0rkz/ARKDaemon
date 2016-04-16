@@ -1,17 +1,17 @@
-import os
-import sys
-import time
-import tarfile
 import fnmatch
+import os
 import platform
+import tarfile
+import time
+
 from ARKDaemon.ServerQuery import ServerQuery
 from ARKDaemon.ServerRcon import ServerRcon
 
 
 class ArkBackup(object):
-    def __init__(self, server_config):
+    def __init__(self, config):
         self.timestamp = time.strftime("%Y-%m-%d_%H.%M.%S")
-        self.server_config = server_config
+        self.config = config
         self.platform = platform.system()
         self.backup_directory = os.path.join('ARK_BACKUPS')
         self.ark_saved_dir = os.path.join('ARK', 'ShooterGame', 'Saved')
@@ -20,9 +20,10 @@ class ArkBackup(object):
 
     def do_backup(self):
         # Do a saveworld operation
+        result = {}
         this = ServerQuery(ip='127.0.0.1', port=int(self.server_config['ARK']['query_port']))
-        result = this.status()
-        if result['status']:
+        query = this.status()
+        if query['status']:
             rcon = ServerRcon(ip='127.0.0.1',
                               port=int(self.server_config['ARK']['rcon_port']),
                               password=self.server_config['ARK']['serveradminpassword'],
@@ -60,13 +61,16 @@ class ArkBackup(object):
                 for filename in fnmatch.filter(filenames, 'Game.ini'):
                     files.append(os.path.join('Config', 'LinuxServer', filename))
 
-        print files
-
         # Make a tar file of the backup content
         tar = tarfile.open(os.path.join(self.backup_directory, 'ARK_BACKUP-{}.tar.gz'.format(self.timestamp)), 'w:gz')
         for file in files:
             tar.add(os.path.join(self.ark_saved_dir, file))
         tar.close()
+
+        result['status'] = True
+        result['backup'] = file
+
+        return result
 
 
     def restore_backup(self):
