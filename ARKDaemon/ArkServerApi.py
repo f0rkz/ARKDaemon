@@ -143,3 +143,10 @@ class ArkServerApi(object):
             result['message'] = 'Stopped'
 
             return result
+
+    def save(self):
+        result = {}
+        this = ServerRcon('127.0.0.1', int(self.config['ARK']['rcon_port']),
+                          self.config['ARK']['serveradminpassword'], 'saveworld')
+        result['save_world'] = this.run_command()
+        return result
