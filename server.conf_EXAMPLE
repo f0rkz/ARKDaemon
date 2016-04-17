@@ -46,6 +46,9 @@ Map = TheIsland
 
 [ARK_WEB]
 api_key =
+ssl_crt =
+ssl_key =
+port = 5000
 
 [GameUserSettings]
 # Testing phase. Adding GameUserSettings parameters here...
