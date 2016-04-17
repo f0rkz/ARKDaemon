@@ -2,7 +2,7 @@ import ConfigParser
 import ast
 import os
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request, abort
 
 from ARKDaemon.ArkBackup import ArkBackup
 from ARKDaemon.ArkServerApi import ArkServerApi
@@ -38,23 +38,43 @@ def status():
 # Server operations. Needs an API key for production but I just want to see if it will work
 @app.route("{}/operation/start".format(api_base_uri), methods=['GET'])
 def start():
-    this = ArkServerApi(config=server_config, safe=True)
-    return jsonify(this.start())
+    key_received = request.args.get('key')
+    api_key = server_config['ARK_WEB']['api_key']
+    if key_received == api_key:
+        this = ArkServerApi(config=server_config, safe=True)
+        return jsonify(this.start())
+    else:
+        abort(401)
 
 @app.route("{}/operation/stop".format(api_base_uri), methods=['GET'])
 def stop():
-    this = ArkServerApi(config=server_config, safe=True)
-    return jsonify(this.stop())
+    key_received = request.args.get('key')
+    api_key = server_config['ARK_WEB']['api_key']
+    if key_received == api_key:
+        this = ArkServerApi(config=server_config, safe=True)
+        return jsonify(this.stop())
+    else:
+        abort(401)
 
 @app.route("{}/operation/save".format(api_base_uri), methods=['GET'])
 def save():
-    this = ArkServerApi(config=server_config, safe=True)
-    return jsonify(this.save())
+    key_received = request.args.get('key')
+    api_key = server_config['ARK_WEB']['api_key']
+    if key_received == api_key:
+        this = ArkServerApi(config=server_config, safe=True)
+        return jsonify(this.save())
+    else:
+        abort(401)
 
 @app.route("{}/operation/backup".format(api_base_uri))
 def backup():
-    this = ArkBackup(config=server_config)
-    return jsonify(this.do_backup())
+    key_received = request.args.get('key')
+    api_key = server_config['ARK_WEB']['api_key']
+    if key_received == api_key:
+        this = ArkBackup(config=server_config)
+        return jsonify(this.do_backup())
+    else:
+        abort(401)
 
 if __name__ == "__main__":
     app.debug = True

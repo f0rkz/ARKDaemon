@@ -7,6 +7,7 @@ import os
 import subprocess
 import sys
 import time
+import uuid
 
 from colorama import init, Fore, Style
 # Classes from project
@@ -50,6 +51,7 @@ argparser.add_argument("--update_mods", help="Runs an update/install of all mods
 argparser.add_argument("-b", "--backup", help="Backs up ARK world data.", action="store_true")
 argparser.add_argument("--debug", help="Debug flag for more output.", action="store_true")
 argparser.add_argument("--web", help="Run the web tool", action="store_true")
+argparser.add_argument("--api_key", help="Generate a random hash for web API", action="store_true")
 args = argparser.parse_args()
 
 parser = ConfigParser.RawConfigParser()
@@ -59,6 +61,17 @@ if os.path.isfile(os.path.join('server.conf')):
     try:
         if server_config['ARK']['mods']:
             mod_list = ast.literal_eval(server_config['ARK']['mods'])
+        if server_config['ARK_WEB']['api_key'] == '':
+            # No key will cause security problems!
+            # Generate one for the user.
+            api_key = uuid.uuid4().hex
+            parser.set('ARK_WEB', 'api_key', api_key)
+            with open('server.conf', 'wb') as configfile:
+                parser.write(configfile)
+            print "No web API key detected! Generating one for you."
+            print "API KEY: {}".format(api_key)
+            print "Keep this key safe. Key is required for web tool. " \
+                  "If you need to generate a new one, run the tool with --api_key"
     except KeyError:
         pass
 else:
@@ -216,6 +229,15 @@ elif args.status:
 elif args.web:
     print "Starting web interface! Hit ^C to quit."
     subprocess.call("python web.py", shell=True)
+
+elif args.api_key:
+    api_key = uuid.uuid4().hex
+    parser.set('ARK_WEB', 'api_key', api_key)
+    with open('server.conf', 'wb') as configfile:
+        parser.write(configfile)
+    print "API KEY: {}".format(api_key)
+    print "Keep this key safe. Key is required for web tool. " \
+          "If you need to generate a new one, run the tool with --api_key"
 
 else:
     sys.exit("No options given. Use --help for more information.")
