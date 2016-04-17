@@ -147,7 +147,7 @@ Example:
 The web portion of ARKDaemon is currently under development. The API is ready to go! Read up on how it works below.
 
 ## A handy dashboard
-Before the web interface is online, I suggest hooking the `status` api object into freeboard.io or something similar.
+Before the web interface is finished, I suggest hooking the `status` api object into freeboard.io or something similar.
 This will enable you to construct a handy at a glance dashboard for your server. *SSL is required by freeboard.io.*
 
 ![alt text](freeboard-example.png "An at a glance dashboard")
