@@ -22,6 +22,8 @@ if os.path.isfile(os.path.join('server.conf')):
 # Initialize the Flask app
 app = Flask(__name__)
 
+print "Starting the web API. Your API key is: {}".format(server_config['ARK_WEB']['api_key'])
+
 # Root of the management
 @app.route("/")
 def root():
