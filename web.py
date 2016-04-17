@@ -18,6 +18,10 @@ if os.path.isfile(os.path.join('server.conf')):
             mod_list = ast.literal_eval(server_config['ARK']['mods'])
     except KeyError:
         pass
+    if server_config['ARK_WEB']['ssl_crt'] and server_config['ARK_WEB']['ssl_key']:
+        ssl_enabled = True
+    else:
+        ssl_enabled = False
 
 # Initialize the Flask app
 app = Flask(__name__)
@@ -79,5 +83,10 @@ def backup():
         abort(401)
 
 if __name__ == "__main__":
-    # app.debug = True
-    app.run(host='0.0.0.0')
+    # SSL
+    if ssl_enabled:
+        context = (os.path.join('ssl', server_config['ARK_WEB']['ssl_crt']),
+                   os.path.join('ssl', server_config['ARK_WEB']['ssl_key']))
+        app.run(host='0.0.0.0', port=server_config['ARK_WEB']['port'], ssl_context = context, threaded=True)
+    else:
+        app.run(host='0.0.0.0', port=server_config['ARK_WEB']['port'], threaded=True)
