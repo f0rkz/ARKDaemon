@@ -4,8 +4,10 @@ import ConfigParser
 import argparse
 import ast
 import os
+import subprocess
 import sys
 import time
+import uuid
 
 from colorama import init, Fore, Style
 # Classes from project
@@ -48,6 +50,8 @@ argparser.add_argument("--update_mods", help="Runs an update/install of all mods
                        action="store_true")
 argparser.add_argument("-b", "--backup", help="Backs up ARK world data.", action="store_true")
 argparser.add_argument("--debug", help="Debug flag for more output.", action="store_true")
+argparser.add_argument("--web", help="Run the web tool", action="store_true")
+argparser.add_argument("--api_key", help="Generate a random hash for web API", action="store_true")
 args = argparser.parse_args()
 
 parser = ConfigParser.RawConfigParser()
@@ -57,6 +61,17 @@ if os.path.isfile(os.path.join('server.conf')):
     try:
         if server_config['ARK']['mods']:
             mod_list = ast.literal_eval(server_config['ARK']['mods'])
+        if server_config['ARK_WEB']['api_key'] == '':
+            # No key will cause security problems!
+            # Generate one for the user.
+            api_key = uuid.uuid4().hex
+            parser.set('ARK_WEB', 'api_key', api_key)
+            with open('server.conf', 'wb') as configfile:
+                parser.write(configfile)
+            print "No web API key detected! Generating one for you."
+            print "API KEY: {}".format(api_key)
+            print "Keep this key safe. Key is required for web tool. " \
+                  "If you need to generate a new one, run the tool with --api_key"
     except KeyError:
         pass
 else:
@@ -113,9 +128,6 @@ elif args.install_ark:
         sys.exit('Something is wrong with your configuration. I expected appid 376030 or 445400, but received {}') \
             .format(server_config['ARK']['appid'])
 
-# elif args.configure:
-#     print "Configure!"
-
 elif args.update:
     this = ServerQuery(ip=server_config['ARK']['ip'], port=int(server_config['ARK']['query_port']))
     result = this.status()
@@ -164,7 +176,7 @@ elif args.update_mods:
         sys.exit("Looks like you don't have any mods configured. I gave up.")
 
 elif args.backup:
-    this = ArkBackup(server_config=server_config)
+    this = ArkBackup(config=server_config)
     this.do_backup()
 
 elif args.remote_status:
@@ -188,31 +200,44 @@ elif args.status:
     this = ServerQuery(ip='127.0.0.1', port=int(server_config['ARK']['query_port']))
     result = this.status()
     if result['status']:
-        if result['os'] == 'w':
-            os = 'Windows'
-        elif result['os'] == 'l':
-            os = 'Linux'
+        #if result['os'] == 'w':
+        #    os = 'Windows'
+        #elif result['os'] == 'l':
+        #    os = 'Linux'
         print("Status: " + Fore.GREEN + "Online" + Style.RESET_ALL)
         print "Server Name: {}".format(result['hostname'])
         print "Server Version: {}".format(result['version'])
         print "Server Map: {}".format(result['map'])
-        print "Server Environment: {}".format(os)
+        print "Server Environment: {}".format(result['os'])
         print "Players: {} / {}".format(result['players_cur'], result['players_max'])
+        if result['system_info']:
+            print "CPU Usage: {}%".format(result['system_info']['cpu'])
+            print "Memory Usage: {}%".format(result['system_info']['mem'])
+            print "Thread Count: {}".format(result['system_info']['threads'])
+        else:
+            print "Can't find a valid PID file to read statistics."
         # Get a list of currently connected players
         rcon = ServerRcon(ip='127.0.0.1',
                    port=int(server_config['ARK']['rcon_port']),
                    password=server_config['ARK']['serveradminpassword'],
                    ark_command='ListPlayers')
         print rcon.run_command()
-        # Get the CPU times and memory load
-        system_status = ArkServer(config=server_config)
-        stats = system_status.sys_status()
-        print "CPU Usage: {}%".format(stats.cpu_percent(interval=1))
-        print "Memory Usage: {}%".format(int(stats.memory_percent()))
-        print "Thread Count: {}".format(stats.num_threads())
     else:
         print("Status: " + Fore.RED + "Offline" + Style.RESET_ALL)
         print "Possible issue with returned data, the server does not exist, or the server is offline."
+
+elif args.web:
+    print "Starting web interface! Hit ^C to quit."
+    subprocess.call("python web.py", shell=True)
+
+elif args.api_key:
+    api_key = uuid.uuid4().hex
+    parser.set('ARK_WEB', 'api_key', api_key)
+    with open('server.conf', 'wb') as configfile:
+        parser.write(configfile)
+    print "API KEY: {}".format(api_key)
+    print "Keep this key safe. Key is required for web tool. " \
+          "If you need to generate a new one, run the tool with --api_key"
 
 else:
     sys.exit("No options given. Use --help for more information.")

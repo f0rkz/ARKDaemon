@@ -44,5 +44,8 @@ Map = TheIsland
 # ['item1', 'item2', 'item3', 'etc...']
 #Mods = ['504122600']
 
+[ARK_WEB]
+api_key =
+
 [GameUserSettings]
 # Testing phase. Adding GameUserSettings parameters here...

@@ -1,5 +1,7 @@
 import re
 from socket import gaierror, error
+import os
+import psutil
 
 import requests
 # External Modules to load
@@ -11,20 +13,46 @@ class ServerQuery(object):
         self.api = 'https://api.ark.bar/server/'
         self.ip = ip
         self.port = port
+        self.pid_file = os.path.join('ark.pid')
 
     def status(self):
         try:
             server = SourceQuery(self.ip, self.port)
             info = server.info()
+
+            # Convert the OS to its full name
+            if info['os'] == "w":
+                my_os = "Windows"
+            elif info['os'] == "l":
+                my_os = "Linux"
+
+            if not os.path.isfile(self.pid_file):
+                sys_data = False
+            else:
+                with open(self.pid_file, 'r') as pidfile:
+                    pid = int(pidfile.read())
+                p = psutil.Process(pid=pid)
+                sys_data = {
+                    'cpu': p.cpu_percent(interval=1),
+                    'mem': int(p.memory_percent()),
+                    'threads': p.num_threads(),
+                }
+
+            # Form up the data array
             data = {
                 'status': True,
                 'hostname': info['hostname'].split(" - ")[0],
                 'version': re.sub('[v()]', '', info['hostname'].split(" - ")[1]),
                 'map': info['map'],
-                'os': info['os'],
+                'os': my_os,
                 'players_cur': info['numplayers'],
                 'players_max': info['maxplayers'],
             }
+            if sys_data:
+                data['system_info'] = sys_data
+            else:
+                data['system_info'] = False
+
         except (gaierror, error):
             data = {
                 'status': False,
