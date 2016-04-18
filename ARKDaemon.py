@@ -20,9 +20,6 @@ from ARKDaemon.ArkBackup import ArkBackup
 # Required for colorama
 init()
 
-# from ARKDaemon.ArkBackup import ArkBackup
-# from ARKDaemon.ConfigureArk import ConfigureArk
-
 # List of Appids capable in this tool:
 # 376030 ark dedi server
 # 445400 ark survival of the fittest dedi server

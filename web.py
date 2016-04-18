@@ -7,6 +7,7 @@ from flask import Flask, jsonify, request, abort
 from ARKDaemon.ArkBackup import ArkBackup
 from ARKDaemon.ArkServerApi import ArkServerApi
 from ARKDaemon.ServerQuery import ServerQuery
+from ARKDaemon.SteamCmdApi import SteamCmd
 
 # Load the server configuration
 parser = ConfigParser.RawConfigParser()
@@ -79,6 +80,62 @@ def backup():
     if key_received == api_key:
         this = ArkBackup(config=server_config)
         return jsonify(this.do_backup())
+    else:
+        abort(401)
+
+@app.route("{}/operation/install_steamcmd".format(api_base_uri))
+def install_steamcmd():
+    key_received = request.args.get('key')
+    api_key = server_config['ARK_WEB']['api_key']
+    if key_received == api_key:
+        this = SteamCmd(appid=server_config['ARK']['appid'])
+        return jsonify(this.install_steamcmd())
+    else:
+        abort(401)
+
+@app.route("{}/operation/update_ark".format(api_base_uri))
+def update_ark():
+    key_received = request.args.get('key')
+    api_key = server_config['ARK_WEB']['api_key']
+    if key_received == api_key:
+        result = {}
+        result['error'] = True
+        result['message'] = "Feature in development."
+        return jsonify(result)
+    else:
+        abort(401)
+
+@app.route("{}/operation/install_ark".format(api_base_uri))
+def install_ark():
+    key_received = request.args.get('key')
+    api_key = server_config['ARK_WEB']['api_key']
+    if key_received == api_key:
+        result = {}
+        result['error'] = True
+        result['message'] = "Feature in development."
+        return jsonify(result)
+    else:
+        abort(401)
+
+@app.route("{}/operation/install_mod".format(api_base_uri))
+def install_mod():
+    key_received = request.args.get('key')
+    api_key = server_config['ARK_WEB']['api_key']
+    if key_received == api_key:
+        mod_id = request.args.get('mod_id')
+        this = SteamCmd(appid=server_config['ARK']['appid'], mod_id=mod_id)
+        return jsonify(this.install_mod())
+    else:
+        abort(401)
+
+@app.route("{}/operation/update_mods".format(api_base_uri))
+def update_mods():
+    key_received = request.args.get('key')
+    api_key = server_config['ARK_WEB']['api_key']
+    if key_received == api_key:
+        result = {}
+        result['error'] = True
+        result['message'] = "Feature in development."
     else:
         abort(401)
 
