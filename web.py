@@ -146,6 +146,6 @@ if __name__ == "__main__":
     if ssl_enabled:
         context = (os.path.join('ssl', server_config['ARK_WEB']['ssl_crt']),
                    os.path.join('ssl', server_config['ARK_WEB']['ssl_key']))
-        app.run(host='0.0.0.0', port=int(server_config['ARK_WEB']['port']), debug=True, ssl_context=context, threaded=True)
+        app.run(host='0.0.0.0', port=int(server_config['ARK_WEB']['port']), ssl_context=context, threaded=True)
     else:
-        app.run(host='0.0.0.0', port=int(server_config['ARK_WEB']['port']), debug=True, threaded=True)
+        app.run(host='0.0.0.0', port=int(server_config['ARK_WEB']['port']), threaded=True)
