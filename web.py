@@ -41,7 +41,7 @@ api_base_uri = '/api'
 
 @app.route("{}/status/".format(api_base_uri), methods=['GET'])
 def status():
-    this = ServerQuery(ip='127.0.0.1', port=int(server_config['ARK']['query_port']))
+    this = ServerQuery(ip='127.0.0.1', port=int(server_config['ARK']['query_port']), config=server_config)
     return jsonify(this.status())
 
 # Server operations. Needs an API key for production but I just want to see if it will work
