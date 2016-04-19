@@ -25,7 +25,7 @@ class ServerQuery(object):
 
             try:
                 if self.config['ARK']['mods']:
-                    mod_list = ast.literal_eval(config['ARK']['mods'])
+                    mod_list = ast.literal_eval(self.config['ARK']['mods'])
             except KeyError:
                 mod_list = False
 
