@@ -5,9 +5,9 @@ import os
 from flask import Flask, jsonify, request, abort
 
 from ARKDaemon.ArkBackup import ArkBackup
-from ARKDaemon.ArkServerApi import ArkServerApi
 from ARKDaemon.ServerQuery import ServerQuery
-from ARKDaemon.SteamCmdApi import SteamCmd
+from ARKWeb.ArkServerApi import ArkServerApi
+from ARKWeb.SteamCmdApi import SteamCmd
 
 # Load the server configuration
 parser = ConfigParser.RawConfigParser()
@@ -26,8 +26,10 @@ if os.path.isfile(os.path.join('server.conf')):
 
 # Initialize the Flask app
 app = Flask(__name__)
-
-print "Starting the web API. Your API key is: {}".format(server_config['ARK_WEB']['api_key'])
+if server_config['ARK_WEB']['api_key']:
+    print "Starting the web API. Your API key is: {}".format(server_config['ARK_WEB']['api_key'])
+else:
+    print "No API key is set in server.conf. Some features will not work correctly."
 
 # Root of the management
 @app.route("/")

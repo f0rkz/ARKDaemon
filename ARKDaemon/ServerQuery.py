@@ -1,24 +1,33 @@
+import ast
+import os
 import re
 from socket import gaierror, error
-import os
-import psutil
 
+import psutil
 import requests
+
 # External Modules to load
 from ARKDaemon.SourceQuery import SourceQuery
 
 
 class ServerQuery(object):
-    def __init__(self, ip='127.0.0.1', port=27105):
+    def __init__(self, ip='127.0.0.1', port=27105, config=False):
         self.api = 'https://api.ark.bar/server/'
         self.ip = ip
         self.port = port
         self.pid_file = os.path.join('ark.pid')
+        self.config = config
 
     def status(self):
         try:
             server = SourceQuery(self.ip, self.port)
             info = server.info()
+
+            try:
+                if self.config['ARK']['mods']:
+                    mod_list = ast.literal_eval(config['ARK']['mods'])
+            except KeyError:
+                mod_list = False
 
             # Convert the OS to its full name
             if info['os'] == "w":
@@ -52,6 +61,13 @@ class ServerQuery(object):
                 data['system_info'] = sys_data
             else:
                 data['system_info'] = False
+
+            if mod_list:
+                installed_mods = {}
+                for mod in mod_list:
+                    installed_mods[mod] = '{steam}{id}'.format(steam='https://steamcommunity.com/sharedfiles/filedetails/?id=', id=mod)
+
+                data['installed_mods'] = installed_mods
 
         except (gaierror, error):
             data = {
