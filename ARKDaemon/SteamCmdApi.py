@@ -1,3 +1,4 @@
+import fnmatch
 import os
 import os.path
 import platform
@@ -6,8 +7,8 @@ import sys
 import tarfile
 import urllib
 import zipfile
-import fnmatch
 from shutil import copytree, rmtree
+
 from ARKDaemon.ZUnpack import ZUnpack
 
 
