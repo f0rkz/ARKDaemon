@@ -5,9 +5,9 @@ import os
 from flask import Flask, jsonify, request, abort
 
 from ARKDaemon.ArkBackup import ArkBackup
+from ARKDaemon.ArkServerApi import ArkServerApi
 from ARKDaemon.ServerQuery import ServerQuery
-from ARKWeb.ArkServerApi import ArkServerApi
-from ARKWeb.SteamCmdApi import SteamCmd
+from ARKDaemon.SteamCmdApi import SteamCmd
 
 # Load the server configuration
 parser = ConfigParser.RawConfigParser()
@@ -147,7 +147,7 @@ if __name__ == "__main__":
         context = (os.path.join('ssl', server_config['ARK_WEB']['ssl_crt']),
                    os.path.join('ssl', server_config['ARK_WEB']['ssl_key']))
         app.debug = True
-        app.run(host='0.0.0.0', port=server_config['ARK_WEB']['port'], ssl_context = context, threaded=True)
+        app.run(host='0.0.0.0', port=server_config['ARK_WEB']['port'], ssl_context=context, threaded=True)
     else:
         app.debug = True
         app.run(host='0.0.0.0', port=server_config['ARK_WEB']['port'], threaded=True)
