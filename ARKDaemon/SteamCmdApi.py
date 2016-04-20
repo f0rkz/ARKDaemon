@@ -121,10 +121,8 @@ class SteamCmd(object):
                 rmtree(post_install_path, ignore_errors=True)
 
             # Go through the .z and .z.uncompressed_size files, extract them, and delete the source .z* file
-            #matches = []
             for root,dirnames,filenames in os.walk(workshop_install_path):
                 for filename in fnmatch.filter(filenames, '*.z'):
-                    #matches.append(os.path.join(root, filename))
                     this = ZUnpack(src_file=str(os.path.join(root, filename)),
                                    dst_file=str(os.path.join(root, filename.split('.z')[0]))
                                    )
@@ -134,12 +132,6 @@ class SteamCmd(object):
 
                 # We don't need the .z.uncompressed_size files.
                 for filename in fnmatch.filter(filenames, '*.z.uncompressed_size'):
-                #    #matches.append(os.path.join(root, filename))
-                #    this = ZUnpack(src_file=str(os.path.join(root, filename)),
-                #                   dst_file=str(os.path.join(root, filename.split('.z')[0]))
-                #                   )
-                #    this.z_unpack()
-                #    # Remove the old file:
                     os.remove(os.path.join(root, filename))
 
             # Copy the contents of the mod to the proper location
@@ -176,10 +168,8 @@ class SteamCmd(object):
                 rmtree(post_install_path, ignore_errors=True)
 
             # Go through the .z and .z.uncompressed_size files, extract them, and delete the source .z* file
-            # matches = []
             for root, dirnames, filenames in os.walk(workshop_install_path):
                 for filename in fnmatch.filter(filenames, '*.z'):
-                    # matches.append(os.path.join(root, filename))
                     this = ZUnpack(src_file=str(os.path.join(root, filename)),
                                    dst_file=str(os.path.join(root, filename.split('.z')[0]))
                                    )
@@ -189,11 +179,6 @@ class SteamCmd(object):
 
                 # We don't need the z.uncompressed_size files
                 for filename in fnmatch.filter(filenames, '*.z.uncompressed_size'):
-                #    # matches.append(os.path.join(root, filename))
-                #    this = ZUnpack(src_file=str(os.path.join(root, filename)),
-                #                   dst_file=str(os.path.join(root, filename.split('.z')[0]))
-                #                   )
-                #    this.z_unpack()
                     # Remove the old file:
                     os.remove(os.path.join(root, filename))
 
