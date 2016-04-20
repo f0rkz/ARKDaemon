@@ -2,12 +2,12 @@ import ConfigParser
 import ast
 import os
 
-from flask import Flask, jsonify, request, abort
+from flask import Flask, jsonify, request, abort, render_template
 
 from ARKDaemon.ArkBackup import ArkBackup
-from ARKDaemon.ArkServerApi import ArkServerApi
 from ARKDaemon.ServerQuery import ServerQuery
-from ARKDaemon.SteamCmdApi import SteamCmd
+from ARKWeb.ArkServerApi import ArkServerApi
+from ARKWeb.SteamCmdApi import SteamCmd
 
 # Load the server configuration
 parser = ConfigParser.RawConfigParser()
@@ -25,7 +25,7 @@ if os.path.isfile(os.path.join('server.conf')):
         ssl_enabled = False
 
 # Initialize the Flask app
-app = Flask(__name__)
+app = Flask(__name__, template_folder=os.path.join('ARKWeb', 'templates'), static_folder=os.path.join('ARKWeb', 'static'))
 if server_config['ARK_WEB']['api_key']:
     print "Starting the web API. Your API key is: {}".format(server_config['ARK_WEB']['api_key'])
 else:
@@ -34,7 +34,11 @@ else:
 # Root of the management
 @app.route("/")
 def root():
-    return "Welcome to ARKDaemon"
+    return render_template('landing.html')
+
+@app.route("/login")
+def login():
+    return render_template('login.html')
 
 # API
 api_base_uri = '/api'
@@ -148,4 +152,5 @@ if __name__ == "__main__":
                    os.path.join('ssl', server_config['ARK_WEB']['ssl_key']))
         app.run(host='0.0.0.0', port=int(server_config['ARK_WEB']['port']), ssl_context=context, threaded=True)
     else:
-        app.run(host='0.0.0.0', port=int(server_config['ARK_WEB']['port']), threaded=True)
+        app.run(port=int(server_config['ARK_WEB']['port']), debug=True, threaded=True)
+        # Removed: host='0.0.0.0',
