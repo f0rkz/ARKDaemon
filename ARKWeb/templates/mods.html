@@ -20,8 +20,8 @@ body {
 </div>
 {% endfor %}
 <div class="container">
-    {% for mod in status['installed_mods'] %}
-    <p><a href="{{ mod[0] }}">{{ mod[0] }}</a></p>
+    {% for mod, url in status['installed_mods'].iteritems() %}
+    <p><a href="{{ url }}">{{ url }}</a></p>
     {% endfor %}
 </div>
 {% endblock %}
