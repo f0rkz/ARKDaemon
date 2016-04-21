@@ -45,6 +45,21 @@ else:
 def root():
     return render_template('landing.html')
 
+@app.route("/dashboard")
+def dashboard():
+    if session.get('logged_in'):
+        this = ServerQuery(ip='127.0.0.1', port=int(server_config['ARK']['query_port']), config=server_config)
+        server_status = this.status()
+        return render_template('dashboard.html', status=server_status)
+    else:
+        return render_template('login.html', error="Permission Denied")
+
+@app.route('/logout')
+def logout():
+    session.pop('logged_in', None)
+    flash('You were logged out')
+    return redirect(url_for('root'))
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
@@ -171,5 +186,4 @@ if __name__ == "__main__":
                    os.path.join('ssl', server_config['ARK_WEB']['ssl_key']))
         app.run(host='0.0.0.0', port=int(server_config['ARK_WEB']['port']), ssl_context=context, threaded=True)
     else:
-        app.run(port=int(server_config['ARK_WEB']['port']), debug=True, threaded=True)
-        # Removed: host='0.0.0.0',
+        app.run(port=int(server_config['ARK_WEB']['port']), host='0.0.0.0', debug=True, threaded=True)
