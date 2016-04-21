@@ -1,8 +1,10 @@
 import ConfigParser
 import ast
 import os
+import uuid
 
-from flask import Flask, jsonify, request, abort, render_template
+from flask import Flask, jsonify, request, abort, render_template, redirect, url_for, session, flash
+from flask_bootstrap import Bootstrap
 
 from ARKDaemon.ArkBackup import ArkBackup
 from ARKDaemon.ServerQuery import ServerQuery
@@ -26,6 +28,13 @@ if os.path.isfile(os.path.join('server.conf')):
 
 # Initialize the Flask app
 app = Flask(__name__, template_folder=os.path.join('ARKWeb', 'templates'), static_folder=os.path.join('ARKWeb', 'static'))
+Bootstrap(app)
+
+app.config['USERNAME'] = server_config['ARK_WEB']['admin_user']
+app.config['PASSWORD'] = server_config['ARK_WEB']['admin_pass']
+# Generate a random key for the secret.
+app.config['SECRET_KEY'] = uuid.uuid4().hex
+
 if server_config['ARK_WEB']['api_key']:
     print "Starting the web API. Your API key is: {}".format(server_config['ARK_WEB']['api_key'])
 else:
@@ -36,9 +45,19 @@ else:
 def root():
     return render_template('landing.html')
 
-@app.route("/login")
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    return render_template('login.html')
+    error = None
+    if request.method == 'POST':
+        if request.form['username'] != app.config['USERNAME']:
+            error = 'Invalid username'
+        elif request.form['password'] != app.config['PASSWORD']:
+            error = 'Invalid password'
+        else:
+            session['logged_in'] = True
+            flash('You were logged in')
+            return redirect(url_for('root'))
+    return render_template('login.html', error=error)
 
 # API
 api_base_uri = '/api'
