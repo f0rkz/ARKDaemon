@@ -21,7 +21,7 @@ body {
 {% endfor %}
 <div class="container">
     {% for mod in status['installed_mods'] %}
-    <p><a href="{{ mod }}">{{ mod }}</a></p>
+    <p><a href="{{ mod[0] }}">{{ mod[0] }}</a></p>
     {% endfor %}
 </div>
 {% endblock %}
