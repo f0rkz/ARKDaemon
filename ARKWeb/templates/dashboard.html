@@ -27,8 +27,10 @@ body {
         {% else %}
         <p>Hostname: {{ status['hostname'] }}</p>
         <p>Map: {{ status['map'] }}</p>
-        <p>Current players: {{ status['players_cur'] }} / {{ status['players_max'] }}</p>
         <p>Version: {{ status['version'] }}</p>
+        <p>Current players: <meter value="{{ status['players_cur'] }}" min="0" max="{{ status['players_max'] }}"></meter></p>
+        <p>CPU Load: <meter value="{{ status['system_info']['cpu'] }} min="0" max="100"></meter></p>
+        <p>Memory Load: <meter value="{{ status['system_info']['mem'] }}" min="0" max="100"></meter></p>
         {% endif %}
     </div>
     <div class="col-md-4">
