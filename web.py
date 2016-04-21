@@ -45,6 +45,12 @@ else:
 def root():
     return render_template('landing.html')
 
+@app.route("/mods")
+def mods():
+    this = ServerQuery(ip='127.0.0.1', port=int(server_config['ARK']['query_port']), config=server_config)
+    server_status = this.status()
+    return render_template('mods.html', status=server_status)
+
 @app.route("/dashboard")
 def dashboard():
     if session.get('logged_in'):

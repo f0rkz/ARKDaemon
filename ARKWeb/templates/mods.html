@@ -1,0 +1,27 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}Installed mods{% endblock %}
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+<style>
+body {
+  padding-top: 50px;
+}
+</style>
+<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+{% endblock %}
+{% block navbar %}
+    {% include "navbar.html" %}
+{% endblock %}
+{% block content %}
+{% for message in get_flashed_messages() %}
+<div class="container">
+    <div class="alert alert-info" role="alert">{{ message }}</div>
+</div>
+{% endfor %}
+<div class="container">
+    {% for mod in status['installed_mods'] %}
+    <p><a href="{{ mod }}">{{ mod }}</a></p>
+    {% endfor %}
+</div>
+{% endblock %}
