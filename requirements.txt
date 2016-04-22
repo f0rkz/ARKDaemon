@@ -2,3 +2,4 @@ requests
 colorama
 psutil
 flask
+flask-bootstrap

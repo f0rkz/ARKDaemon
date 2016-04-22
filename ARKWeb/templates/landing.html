@@ -1,0 +1,30 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}ARKDaemon Management Panel{% endblock %}
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+<style>
+body {
+  padding-top: 50px;
+}
+</style>
+<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+{% endblock %}
+{% block navbar %}
+    {% include "navbar.html" %}
+{% endblock %}
+{% block content %}
+{% for message in get_flashed_messages() %}
+<div class="container">
+    <div class="alert alert-info" role="alert">{{ message }}</div>
+</div>
+{% endfor %}
+<div class="container">
+    <h1>Welcome to ARKDaemon</h1>
+    <p>ARKDaemon is a python tool for ARK Dedicated servers. It can be used to manage your ARK Server as well as provide a web administration tool for your server.</p>
+</div>
+<div class="container">
+    <h1>Recent News</h1>
+    <p><strong>4/20/16</strong>: The web portal part of the tool has begun development. Expect bugs and new features to be added.</p>
+</div>
+{% endblock %}

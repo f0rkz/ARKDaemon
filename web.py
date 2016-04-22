@@ -1,13 +1,15 @@
 import ConfigParser
 import ast
 import os
+import uuid
 
-from flask import Flask, jsonify, request, abort
+from flask import Flask, jsonify, request, abort, render_template, redirect, url_for, session, flash
+from flask_bootstrap import Bootstrap
 
 from ARKDaemon.ArkBackup import ArkBackup
-from ARKDaemon.ArkServerApi import ArkServerApi
 from ARKDaemon.ServerQuery import ServerQuery
-from ARKDaemon.SteamCmdApi import SteamCmd
+from ARKWeb.ArkServerApi import ArkServerApi
+from ARKWeb.SteamCmdApi import SteamCmd
 
 # Load the server configuration
 parser = ConfigParser.RawConfigParser()
@@ -25,7 +27,14 @@ if os.path.isfile(os.path.join('server.conf')):
         ssl_enabled = False
 
 # Initialize the Flask app
-app = Flask(__name__)
+app = Flask(__name__, template_folder=os.path.join('ARKWeb', 'templates'), static_folder=os.path.join('ARKWeb', 'static'))
+Bootstrap(app)
+
+app.config['USERNAME'] = server_config['ARK_WEB']['admin_user']
+app.config['PASSWORD'] = server_config['ARK_WEB']['admin_pass']
+# Generate a random key for the secret.
+app.config['SECRET_KEY'] = uuid.uuid4().hex
+
 if server_config['ARK_WEB']['api_key']:
     print "Starting the web API. Your API key is: {}".format(server_config['ARK_WEB']['api_key'])
 else:
@@ -34,7 +43,42 @@ else:
 # Root of the management
 @app.route("/")
 def root():
-    return "Welcome to ARKDaemon"
+    return render_template('landing.html')
+
+@app.route("/mods")
+def mods():
+    this = ServerQuery(ip='127.0.0.1', port=int(server_config['ARK']['query_port']), config=server_config)
+    server_status = this.status()
+    return render_template('mods.html', status=server_status)
+
+@app.route("/dashboard")
+def dashboard():
+    if session.get('logged_in'):
+        this = ServerQuery(ip='127.0.0.1', port=int(server_config['ARK']['query_port']), config=server_config)
+        server_status = this.status()
+        return render_template('dashboard.html', status=server_status)
+    else:
+        return render_template('login.html', error="Permission Denied")
+
+@app.route('/logout')
+def logout():
+    session.pop('logged_in', None)
+    flash('You were logged out')
+    return redirect(url_for('root'))
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    error = None
+    if request.method == 'POST':
+        if request.form['username'] != app.config['USERNAME']:
+            error = 'Invalid username'
+        elif request.form['password'] != app.config['PASSWORD']:
+            error = 'Invalid password'
+        else:
+            session['logged_in'] = True
+            flash('You were logged in')
+            return redirect(url_for('root'))
+    return render_template('login.html', error=error)
 
 # API
 api_base_uri = '/api'
@@ -148,4 +192,4 @@ if __name__ == "__main__":
                    os.path.join('ssl', server_config['ARK_WEB']['ssl_key']))
         app.run(host='0.0.0.0', port=int(server_config['ARK_WEB']['port']), ssl_context=context, threaded=True)
     else:
-        app.run(host='0.0.0.0', port=int(server_config['ARK_WEB']['port']), threaded=True)
+        app.run(port=int(server_config['ARK_WEB']['port']), host='0.0.0.0', debug=True, threaded=True)

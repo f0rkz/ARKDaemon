@@ -1,0 +1,47 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}ARKDaemon Management Panel{% endblock %}
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+<style>
+body {
+  padding-top: 50px;
+}
+</style>
+<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+{% endblock %}
+{% block navbar %}
+    {% include "navbar.html" %}
+{% endblock %}
+{% block content %}
+{% for message in get_flashed_messages() %}
+<div class="container">
+    <div class="alert alert-info" role="alert">{{ message }}</div>
+</div>
+{% endfor %}
+<div class="container">
+    <div class="col-md-4">
+        <h1>Server Status</h1>
+        {% if status['status'] == False %}
+        <font color="red"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>Server offline</font>
+        {% else %}
+        <p>Hostname: {{ status['hostname'] }}</p>
+        <p>Map: {{ status['map'] }}</p>
+        <p>Version: {{ status['version'] }}</p>
+        <p>Current players: <meter value="{{ status['players_cur'] }}" min="0" max="{{ status['players_max'] }}"></meter> {{ status['players_cur'] }} / {{ status['players_max'] }}</p>
+        <p>CPU Load: <meter value="{{ status['system_info']['cpu'] }} min="0" max="100"></meter> {{ status['system_info']['cpu'] }}</p>
+        <p>Memory Load: <meter value="{{ status['system_info']['mem'] }}" min="0" max="100"></meter> {{ status['system_info']['mem'] }}</p>
+        {% endif %}
+    </div>
+    <div class="col-md-4">
+        <h1>Server Operations</h1>
+        <p>Some more stuff. You know, lorem ispum.</p>
+    </div>
+    <div class="col-md-4">
+        <h1>Recent Actions</h1>
+        <p>A list</p>
+        <p>Of recent</p>
+        <p>Server actions</p>
+    </div>
+</div>
+{% endblock %}

@@ -45,6 +45,8 @@ Map = TheIsland
 #Mods = ['504122600']
 
 [ARK_WEB]
+admin_user = admin
+admin_pass = password
 api_key =
 ssl_crt =
 ssl_key =
