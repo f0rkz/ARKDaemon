@@ -126,7 +126,7 @@ elif args.install_ark:
             .format(server_config['ARK']['appid'])
 
 elif args.update:
-    this = ServerQuery(ip=server_config['ARK']['ip'], port=int(server_config['ARK']['query_port']))
+    this = ServerQuery(ip=server_config['ARK']['ip'], port=int(server_config['ARK']['query_port']), config=server_config)
     result = this.status()
     if result['status']:
         sys.exit("Server is currently online! Stop the server first.")
@@ -144,7 +144,7 @@ elif args.stop:
     this.stop()
 
 elif args.save_world:
-    this = ServerQuery(ip='127.0.0.1', port=int(server_config['ARK']['query_port']))
+    this = ServerQuery(ip='127.0.0.1', port=int(server_config['ARK']['query_port']), config=server_config)
     result = this.status()
     if result['status']:
         rcon = ServerRcon(ip='127.0.0.1',
@@ -180,7 +180,7 @@ elif args.remote_status:
     if len(args.remote_status) > 2 or len(args.remote_status) < 2:
         sys.exit("Improper values given. Please supply: [ip] [port]")
     elif len(args.remote_status) == 2:
-        this = ServerQuery(ip=args.remote_status[0], port=args.remote_status[1])
+        this = ServerQuery(ip=args.remote_status[0], port=args.remote_status[1], config=server_config)
         result = this.remotestatus()
         if result['status']:
             print("Status: " + Fore.GREEN + "Online" + Style.RESET_ALL)
@@ -194,7 +194,7 @@ elif args.remote_status:
             print "Possible issue with returned data, the server does not exist, or the server is offline."
 
 elif args.status:
-    this = ServerQuery(ip='127.0.0.1', port=int(server_config['ARK']['query_port']))
+    this = ServerQuery(ip='127.0.0.1', port=int(server_config['ARK']['query_port']), config=server_config)
     result = this.status()
     if result['status']:
         #if result['os'] == 'w':
