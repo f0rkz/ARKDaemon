@@ -26,8 +26,10 @@ if os.path.isfile(os.path.join('server.conf')):
 
 # Initialize the Flask app
 app = Flask(__name__)
-
-print "Starting the web API. Your API key is: {}".format(server_config['ARK_WEB']['api_key'])
+if server_config['ARK_WEB']['api_key']:
+    print "Starting the web API. Your API key is: {}".format(server_config['ARK_WEB']['api_key'])
+else:
+    print "No API key is set in server.conf. Some features will not work correctly."
 
 # Root of the management
 @app.route("/")
@@ -39,7 +41,7 @@ api_base_uri = '/api'
 
 @app.route("{}/status/".format(api_base_uri), methods=['GET'])
 def status():
-    this = ServerQuery(ip='127.0.0.1', port=int(server_config['ARK']['query_port']))
+    this = ServerQuery(ip='127.0.0.1', port=int(server_config['ARK']['query_port']), config=server_config)
     return jsonify(this.status())
 
 # Server operations. Needs an API key for production but I just want to see if it will work
@@ -144,6 +146,6 @@ if __name__ == "__main__":
     if ssl_enabled:
         context = (os.path.join('ssl', server_config['ARK_WEB']['ssl_crt']),
                    os.path.join('ssl', server_config['ARK_WEB']['ssl_key']))
-        app.run(host='0.0.0.0', port=server_config['ARK_WEB']['port'], ssl_context = context, threaded=True)
+        app.run(host='0.0.0.0', port=int(server_config['ARK_WEB']['port']), ssl_context=context, threaded=True)
     else:
-        app.run(host='0.0.0.0', port=server_config['ARK_WEB']['port'], threaded=True)
+        app.run(host='0.0.0.0', port=int(server_config['ARK_WEB']['port']), threaded=True)
