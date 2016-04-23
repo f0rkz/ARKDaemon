@@ -137,11 +137,13 @@ elif args.update:
 
 elif args.start:
     this = ArkServer(config=server_config)
-    this.start()
+    server = this.start()
+    print server['message']
 
 elif args.stop:
     this = ArkServer(config=server_config, safe=safe)
-    this.stop()
+    server = this.stop()
+    print server['message']
 
 elif args.save_world:
     this = ServerQuery(ip='127.0.0.1', port=int(server_config['ARK']['query_port']), config=server_config)
@@ -174,7 +176,16 @@ elif args.update_mods:
 
 elif args.backup:
     this = ArkBackup(config=server_config)
-    this.do_backup()
+    backup = this.do_backup()
+    if backup['status'] is True:
+        print backup['message']
+        for filename in backup['backup_files']:
+            print filename
+    else:
+        print "Something went wrong!"
+        print backup['message']
+
+
 
 elif args.remote_status:
     if len(args.remote_status) > 2 or len(args.remote_status) < 2:
