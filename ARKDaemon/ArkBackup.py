@@ -39,13 +39,13 @@ class ArkBackup(object):
         for root, dirnames, filenames in os.walk(self.ark_saved_dir):
             # Backup arkprofiles
             for filename in fnmatch.filter(filenames, '*.arkprofile'):
-                files.append(os.path.join('SavedArks', filename))
+                files.append(os.path.join(self.ark_saved_dir, 'SavedArks', filename))
             # Backup tribes
             for filename in fnmatch.filter(filenames, '*.arktribe'):
-                files.append(os.path.join('SavedArks', filename))
+                files.append(os.path.join(self.ark_saved_dir, 'SavedArks', filename))
             # Backup the map file
             for filename in fnmatch.filter(filenames, '{}.ark'.format(self.config['ARK']['map'])):
-                files.append(os.path.join('SavedArks', filename))
+                files.append(os.path.join(self.ark_saved_dir, 'SavedArks', filename))
 
         for root,dirnames,filenames in os.walk(self.platform_dir):
             # Backup GameUserSettings.ini
@@ -53,24 +53,6 @@ class ArkBackup(object):
                 files.append(os.path.join(self.platform_dir, filename))
             for filename in fnmatch.filter(filenames, 'Game.ini'):
                 files.append(os.path.join(self.platform_dir, filename))
-
-        #if self.platform == 'Windows':
-        #    for root,dirnames,filenames in os.walk(self.ark_config_dir_windows):
-        #        # Backup GameUserSettings.ini
-        #        for filename in fnmatch.filter(filenames, 'GameUserSettings.ini'):
-        #            files.append(os.path.join('Config', 'WindowsServer', filename))
-        #        # Backup Game.ini
-        #        for filename in fnmatch.filter(filenames, 'Game.ini'):
-        #            files.append(os.path.join('Config', 'WindowsServer', filename))
-
-        #elif self.platform == 'Linux':
-        #    for root, dirnames, filenames in os.walk(self.ark_config_dir_linux):
-        #        # Backup GameUserSettings.ini
-        #        for filename in fnmatch.filter(filenames, 'GameUserSettings.ini'):
-        #            files.append(os.path.join('Config', 'LinuxServer', filename))
-        #        # Backup Game.ini
-        #        for filename in fnmatch.filter(filenames, 'Game.ini'):
-        #            files.append(os.path.join('Config', 'LinuxServer', filename))
 
         # Make a tar file of the backup content
         backup_name = 'ARK_BACKUP-{}.tar.gz'.format(self.timestamp)
