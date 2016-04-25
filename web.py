@@ -7,9 +7,9 @@ from flask import Flask, jsonify, request, abort, render_template, redirect, url
 from flask_bootstrap import Bootstrap
 
 from ARKDaemon.ArkBackup import ArkBackup
+from ARKDaemon.ArkServer import ArkServer
 from ARKDaemon.ServerQuery import ServerQuery
-from ARKWeb.ArkServerApi import ArkServerApi
-from ARKWeb.SteamCmdApi import SteamCmd
+from ARKDaemon.SteamCmd import SteamCmd
 
 # Load the server configuration
 parser = ConfigParser.RawConfigParser()
@@ -94,7 +94,7 @@ def start():
     key_received = request.args.get('key')
     api_key = server_config['ARK_WEB']['api_key']
     if key_received == api_key:
-        this = ArkServerApi(config=server_config, safe=True)
+        this = ArkServer(config=server_config, safe=True)
         return jsonify(this.start())
     else:
         abort(401)
@@ -104,7 +104,7 @@ def stop():
     key_received = request.args.get('key')
     api_key = server_config['ARK_WEB']['api_key']
     if key_received == api_key:
-        this = ArkServerApi(config=server_config, safe=True)
+        this = ArkServer(config=server_config, safe=True)
         return jsonify(this.stop())
     else:
         abort(401)
@@ -114,7 +114,7 @@ def save():
     key_received = request.args.get('key')
     api_key = server_config['ARK_WEB']['api_key']
     if key_received == api_key:
-        this = ArkServerApi(config=server_config, safe=True)
+        this = ArkServer(config=server_config, safe=True)
         return jsonify(this.save())
     else:
         abort(401)
