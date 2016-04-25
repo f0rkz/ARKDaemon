@@ -9,7 +9,7 @@ from flask_bootstrap import Bootstrap
 from ARKDaemon.ArkBackup import ArkBackup
 from ARKDaemon.ArkServer import ArkServer
 from ARKDaemon.ServerQuery import ServerQuery
-from ARKWeb.SteamCmdApi import SteamCmd
+from ARKDaemon.SteamCmd import SteamCmd
 
 # Load the server configuration
 parser = ConfigParser.RawConfigParser()
