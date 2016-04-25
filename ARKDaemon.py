@@ -102,24 +102,19 @@ if args.install_steamcmd:
     print "Checking and installing steamcmd."
     this = SteamCmd(appid=False)
     if args.force:
-        this.install_steamcmd(force=True)
+        result = this.install_steamcmd(force=True)
+        print result['message']
     else:
-        this.install_steamcmd()
+        result = this.install_steamcmd()
+        print result['message']
 
 elif args.install_ark:
-    if server_config['ARK']['appid'] == '376030':
-        appid = '376030'
+    if server_config['ARK']['appid'] == '376030' or server_config['ARK']['appid'] == '445400':
         print "Installing ARK files. This will take a while. I suggest making some tea."
         time.sleep(5)
-        this = SteamCmd(appid=appid)
-        this.install_gamefiles()
-
-    elif server_config['ARK']['appid'] == '445400':
-        appid = '445400'
-        print "Installing ARK files. This will take a while. I suggest making some tea."
-        time.sleep(5)
-        this = SteamCmd(appid=appid)
-        this.install_gamefiles()
+        this = SteamCmd(appid=server_config['ARK']['appid'])
+        result = this.install_gamefiles()
+        print result['message']
 
     else:
         sys.exit('Something is wrong with your configuration. I expected appid 376030 or 445400, but received {}') \
@@ -133,7 +128,8 @@ elif args.update:
     else:
         print "Running update for ARK! Appid: {}".format(server_config['ARK']['appid'])
         update = SteamCmd(appid=server_config['ARK']['appid'])
-        update.install_gamefiles()
+        result = update.install_gamefiles()
+        print result['message']
 
 elif args.start:
     this = ArkServer(config=server_config)
@@ -159,7 +155,8 @@ elif args.save_world:
 
 elif args.install_mod:
     this = SteamCmd(appid=server_config['ARK']['ark_appid'], mod_id=args.install_mod)
-    this.install_mod()
+    result = this.install_mod()
+    print result['message']
 
 elif args.update_mods:
     try:
@@ -168,7 +165,8 @@ elif args.update_mods:
             for mod in mod_list:
                 print "Running update for mod {}".format(mod)
                 this = SteamCmd(appid=server_config['ARK']['ark_appid'], mod_id=mod)
-                this.install_mod()
+                result = this.install_mod()
+                print result['message']
         else:
             sys.exit("Looks like you don't have any mods configured. I gave up.")
     except:
