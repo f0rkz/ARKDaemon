@@ -75,6 +75,8 @@ class SteamCmd(object):
         result['error'] = False
         result['message'] = "All files installed to {}".format(self.install_dir)
 
+        return result
+
     def install_mod(self):
         result = {}
         steamcmd_run = '{steamcmd_bin} ' \
@@ -121,4 +123,5 @@ class SteamCmd(object):
         copytree(workshop_install_path, post_install_path, symlinks=False)
         result['error'] = False
         result['message'] = "All operations completed. Mod ID: {} copied to: {}".format(self.mod_id, post_install_path)
+
         return result
