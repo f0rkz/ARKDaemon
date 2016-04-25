@@ -3,7 +3,6 @@ import os
 import os.path
 import platform
 import subprocess
-import sys
 import tarfile
 import urllib
 import zipfile
