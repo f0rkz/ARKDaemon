@@ -16,6 +16,7 @@ from ARKDaemon.ServerQuery import ServerQuery
 from ARKDaemon.ServerRcon import ServerRcon
 from ARKDaemon.ArkServer import ArkServer
 from ARKDaemon.ArkBackup import ArkBackup
+from ARKDaemon.rcon_console import RconConsole
 
 # Required for colorama
 init()
@@ -49,6 +50,7 @@ argparser.add_argument("-b", "--backup", help="Backs up ARK world data.", action
 argparser.add_argument("--debug", help="Debug flag for more output.", action="store_true")
 argparser.add_argument("--web", help="Run the web tool", action="store_true")
 argparser.add_argument("--api_key", help="Generate a random hash for web API", action="store_true")
+argparser.add_argument('--rcon_console', help="Start an RCON console", action="store_true")
 args = argparser.parse_args()
 
 parser = ConfigParser.RawConfigParser()
@@ -136,6 +138,10 @@ elif args.start:
     server = this.start()
     print server['message']
 
+elif args.rcon_console:
+    this = RconConsole(config=server_config)
+    this.start()
+
 elif args.stop:
     this = ArkServer(config=server_config, safe=safe)
     server = this.stop()
@@ -182,7 +188,6 @@ elif args.backup:
     else:
         print "Something went wrong!"
         print backup['message']
-
 
 
 elif args.remote_status:
